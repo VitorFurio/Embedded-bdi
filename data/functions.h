@@ -2,6 +2,7 @@
 #define FUNCTIONS_H_
 
 #include <iostream>
+#include <string>
 
 bool action_say_hello()
 {
@@ -10,5 +11,13 @@ bool action_say_hello()
                "I am terminated" << std::endl;
   return true;
 }
+
+//bool internal_action_broadcast(const std::string& msg)
+//bool internal_action_broadcast()
+//{
+//  std::cout << "Recebendo do broadcast:" << std::endl;
+  //std::cout << "param 1: " << msg << std::endl;
+//  return true;
+//}
 
 #endif /* FUNCTIONS_H_ */

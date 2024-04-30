@@ -179,6 +179,7 @@ public class HeaderCreator
              "#include \"bdi/event_base.h\"\n"                                +
              "#include \"bdi/plan_base.h\"\n"                                 +
              "#include \"bdi/intention_base.h\"\n"                            +
+             "#include \"bdi/internal_action.h\"\n"                            +
              "#include \"../../" + function_file + "\""                       +
              "\n\n"                                                           +
              "class AgentSettings\n"                                          +
@@ -283,8 +284,8 @@ public class HeaderCreator
                argument = "internal_action_broadcast";
                // JH: for .broadcast
                // TODO: remove comments when C side is ready for call .add_arg
-               arg_terms += "    // ToBeUncommented: " + inst_id + ".add_arg(CENUMFOR_ILF."+ body.getArgs().get(0).toUpperCase()+");\n";
-               arg_terms += "    // ToBeUncommented: " + inst_id + ".add_arg(belief_"+ body.getArgs().get(1)+");\n";
+               arg_terms += "    /* ToBeUncommented: */" + inst_id + ".add_arg(CENUMFOR_ILF::"+ body.getArgs().get(0).toUpperCase()+");\n";
+               arg_terms += "    //* ToBeUncommented: /" + inst_id + ".add_arg(belief_"+ body.getArgs().get(1)+");\n";
 
              } else {
                System.out.println("*** translation not implemented for "+body.getProposition());

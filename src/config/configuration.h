@@ -1,11 +1,13 @@
 /*
  * AgentSpeak code:
  *
+ * // file used to test translator
+ * 
  * !start.
  * 
  * +!start <- +happy.
  * 
- * +happy <- !!hello.
+ * +happy <- !!hello; .broadcast(tell,happy).
  * 
  * +!hello <- say_hello.
  */ 
@@ -17,6 +19,7 @@
 #include "bdi/event_base.h"
 #include "bdi/plan_base.h"
 #include "bdi/intention_base.h"
+#include "bdi/internal_action.h"
 #include "../../data/functions.h"
 
 class AgentSettings
@@ -68,11 +71,17 @@ public:
 
     Proposition prop_1(0);
     context_1 = Context(0);
-    body_1 = Body(1);
+    body_1 = Body(2);
 
     Proposition prop_1_body_0(2);
     BodyInstruction inst_0_1(BodyType::GOAL, prop_1_body_0, EventOperator::GOAL_ACHIEVE);
     body_1.add_instruction(inst_0_1);
+
+    Proposition prop_1_body_1(3);
+    BodyInstruction inst_1_1(BodyType::INTERNAL_ACTION, prop_1_body_1, internal_action_broadcast);
+    /* ToBeUncommented: */inst_1_1.add_arg(CENUMFOR_ILF::TELL);
+    //* ToBeUncommented: /inst_1_1.add_arg(belief_happy);
+    body_1.add_instruction(inst_1_1);
 
     Plan plan_1(EventOperator::BELIEF_ADDITION, prop_1, &context_1, &body_1);
     plan_base.add_plan(plan_1);
@@ -83,7 +92,7 @@ public:
     context_2 = Context(0);
     body_2 = Body(1);
 
-    Proposition prop_2_body_0(3);
+    Proposition prop_2_body_0(4);
     BodyInstruction inst_0_2(BodyType::ACTION, prop_2_body_0, action_say_hello);
     body_2.add_instruction(inst_0_2);
 

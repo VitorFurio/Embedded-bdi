@@ -15,7 +15,8 @@ enum class BodyType : unsigned char
 {
   ACTION,
   GOAL,
-  BELIEF
+  BELIEF,
+  INTERNAL_ACTION
 };
 
 #endif /* SYNTAX_BODY_BODY_TYPE_H_ */

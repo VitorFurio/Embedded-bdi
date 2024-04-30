@@ -15,6 +15,8 @@ BodyInstruction::BodyInstruction(BodyType type,
   _proposition = prop;
   _take_action = take_action;
   _operator = EventOperator::BELIEF_ADDITION;
+  
+  //_belief = nullptr;
 }
 
 BodyInstruction::BodyInstruction(BodyType type,
@@ -25,7 +27,20 @@ BodyInstruction::BodyInstruction(BodyType type,
   _proposition = prop;
   _take_action = nullptr;
   _operator = event_operator;
+  
+  //_belief = nullptr;
 }
+
+// For internal action:
+//BodyInstruction::BodyInstruction(BodyType type,
+//                                 Proposition prop,
+//                                 bool (*take_internal_action)(const std::string&))
+//{
+//  _type = type;
+//  _proposition = prop;
+//  _take_internal_action = take_internal_action;
+// _operator = EventOperator::BELIEF_ADDITION;
+//}
 
 // Add handling of belief that is not in beliefbase
 BodyReturn BodyInstruction::run_instruction(BeliefBase * belief_base,
@@ -39,6 +54,14 @@ BodyReturn BodyInstruction::run_instruction(BeliefBase * belief_base,
     bool value = _take_action();
     result = BodyReturn(BodyType::ACTION, value, nullptr);
   }
+  
+  // For internal Action
+  else if (_type == BodyType::INTERNAL_ACTION)
+  {
+    bool value = _take_action();
+    result = BodyReturn(BodyType::ACTION, value, nullptr);
+  }
+  
   else if (_type == BodyType::BELIEF)
   {
     if (event_base->add_event(event))
@@ -88,3 +111,17 @@ BodyReturn BodyInstruction::run_instruction(BeliefBase * belief_base,
 
   return result;
 }
+
+
+// For internal actions:
+void BodyInstruction::add_arg(CENUMFOR_ILF ilf){
+   _ilf = ilf;
+}
+
+//void BodyInstruction::add_arg(Belief belief){
+ //  _belief = belief;
+//}
+
+
+
+

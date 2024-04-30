@@ -4,6 +4,6 @@
 
 +!start <- +happy.
 
-+happy <- !!hello.
++happy <- !!hello; .broadcast(tell,happy).
 
 +!hello <- say_hello.

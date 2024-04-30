@@ -9,9 +9,12 @@
 #define SYNTAX_BODY_BODY_INSTRUCTION_H_
 
 #include "body_type.h"
+#include "cenumfor_ilf.h"
 #include "body_return.h"
 #include "../bdi/belief_base.h"
 #include "../bdi/event_base.h"
+#include "../bdi/belief.h"
+#include <string>
 #include <cstdint>
 
 /**
@@ -27,6 +30,14 @@ private:
   EventOperator _operator;
   /// Identifies whether the instruction is an Action, Goal or Belief operation
   BodyType _type;
+  
+  // For internal actions:
+  CENUMFOR_ILF _ilf;
+  //Belief _belief;
+  //bool *_belief;
+  char _arg[4] = "ola";
+  // std::string _arg; 
+  //bool (*_take_internal_action)();
 
 public:
   /**
@@ -36,6 +47,9 @@ public:
    * @param take_action Function that acts in the environment
    */
   BodyInstruction(BodyType type, Proposition prop, bool (*take_action)());
+
+  // For internal actions: 
+  BodyInstruction(BodyType type, Proposition prop, bool (*take_internal_action)(const std::string&));
 
   /**
    * Constructor for Belief and Goal events
@@ -59,6 +73,15 @@ public:
   {
     return _type;
   }
+  
+  
+  // For internal actions:
+  void add_arg(CENUMFOR_ILF ilf);
+  //void add_arg(Belief belief);
+  //void add_arg(Belief * belief) {
+   //     _belief = belief; // Modifica o objeto _belief_happy para ser igual ao objeto belief
+   // }
+  
 };
 
 #endif /* SYNTAX_BODY_BODY_INSTRUCTION_H_ */
