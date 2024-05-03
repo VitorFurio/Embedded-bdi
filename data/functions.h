@@ -12,6 +12,14 @@ bool action_say_hello()
   return true;
 }
 
+bool update_hello()
+{
+  std::cout << "Hello world!" << std::endl;
+  std::cout << "I am an agent and I will keep running until " <<
+               "I am terminated" << std::endl;
+  return true;
+}
+
 //bool internal_action_broadcast(const std::string& msg)
 //bool internal_action_broadcast()
 //{

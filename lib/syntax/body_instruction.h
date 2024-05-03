@@ -34,6 +34,7 @@ private:
   // For internal actions:
   CENUMFOR_ILF _ilf;
   //Belief _belief;
+  
   //bool *_belief;
   char _arg[4] = "ola";
   // std::string _arg; 
