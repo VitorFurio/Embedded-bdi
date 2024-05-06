@@ -324,10 +324,7 @@ public class HeaderCreator
         context_count++;
       }
 
-      text = "  }\n\n";
-      out.append(text);
-
-       //populate prop_map in c++:
+      //populate prop_map in c++:
        text = "  //Mapping propositions to enable communication between agents.\n";
           out.append(text);
       for (Map.Entry<String, Integer> entry : prop_map.entrySet()) {
@@ -338,6 +335,10 @@ public class HeaderCreator
           out.append(text);
       }
       text = "\n";
+      out.append(text);
+      
+      
+      text = "  }\n\n";
       out.append(text);
     
       text = "  BeliefBase * get_belief_base()\n  {\n"                        +

@@ -99,8 +99,6 @@ public:
 
     Plan plan_2(EventOperator::GOAL_ADDITION, prop_2, &context_2, &body_2);
     plan_base.add_plan(plan_2);
-  }
-
   //Mapping propositions to enable communication between agents.
   table.addItem("happy", 0, true);
   table.addItem(".broadcast", 3, true);
@@ -108,6 +106,7 @@ public:
   table.addItem("say_hello", 4, true);
   table.addItem("hello", 2, true);
 
+  }
 
   BeliefBase * get_belief_base()
   {
