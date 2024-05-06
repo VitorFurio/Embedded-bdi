@@ -12,6 +12,14 @@ bool action_say_hello()
   return true;
 }
 
+bool internal_action_broadcast()
+{
+  std::cout << "Recebendo do broadcast:" << std::endl;
+ // std::cout << "param 1: " << str1 << std::endl;
+ // std::cout << "param 2: " << str2 << std::endl;
+  return true;
+}
+
 bool update_hello()
 {
   std::cout << "Hello world!" << std::endl;

@@ -10,19 +10,11 @@
 
 #include <iostream>
 #include <string>
-#include "../syntax/cenumfor_ilf.h"
 
 bool internal_action_broadcast()
 {
   std::cout << "Recebendo do broadcast:" << std::endl;
   //std::cout << "param 1: " << msg << std::endl;
-  return true;
-}
-
-bool internal_action_broadcast2(CENUMFOR_ILF ilf)
-{
-  std::cout << "Recebendo do broadcast:" << std::endl;
-  std::cout << "Valor do enumerável: " << static_cast<int>(ilf) << std::endl;
   return true;
 }
 

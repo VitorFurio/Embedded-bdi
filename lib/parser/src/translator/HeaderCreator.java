@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class HeaderCreator
@@ -179,7 +180,7 @@ public class HeaderCreator
              "#include \"bdi/event_base.h\"\n"                                +
              "#include \"bdi/plan_base.h\"\n"                                 +
              "#include \"bdi/intention_base.h\"\n"                            +
-             "#include \"bdi/internal_action.h\"\n"                            +
+             "#include \"communication/hash_table.h\"\n"                            +
              "#include \"../../" + function_file + "\""                       +
              "\n\n"                                                           +
              "class AgentSettings\n"                                          +
@@ -196,7 +197,8 @@ public class HeaderCreator
       text = "  BeliefBase belief_base;\n"                                    +
              "  EventBase event_base;\n"                                      +
              "  PlanBase plan_base;\n"                                        +
-             "  IntentionBase intention_base;\n";
+             "  IntentionBase intention_base;\n"			      +
+             "  HashTable table; //Map of propositions used for communication.\n"; //prop_map in C++ 			      
       out.append(text);
 
       text = "\npublic:\n"                                                    +
@@ -325,6 +327,19 @@ public class HeaderCreator
       text = "  }\n\n";
       out.append(text);
 
+       //populate prop_map in c++:
+       text = "  //Mapping propositions to enable communication between agents.\n";
+          out.append(text);
+      for (Map.Entry<String, Integer> entry : prop_map.entrySet()) {
+          String key = entry.getKey();
+          Integer value = entry.getValue();
+          //System.out.println("  table.addItem(\"" + key + "\", "+ value + ", true);");
+          text = "  table.addItem(\"" + key + "\", "+ value + ", true);\n";
+          out.append(text);
+      }
+      text = "\n";
+      out.append(text);
+    
       text = "  BeliefBase * get_belief_base()\n  {\n"                        +
              "    return &belief_base;\n"                                     +
              "  }\n\n"                                                        +
@@ -340,7 +355,7 @@ public class HeaderCreator
              "};\n\n#endif /*"                                                +
              "CONFIGURATION_H_ */";
       out.append(text);
-
+      
       out.close();
     }
     catch (Exception e)
