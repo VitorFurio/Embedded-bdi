@@ -61,7 +61,9 @@ void HashTable::print() {
     for (int i = 0; i < HASH_SIZE; ++i) {
         std::cout << "Bucket " << i << ": ";
         for (Item* item : hashTable[i]) {
-            std::cout << item->getName() << " ";
+            std::cout << "Name: " << item->getName() << ", ";
+            std::cout << "Number: " << static_cast<int>(item->getNumber()) << ", ";
+            std::cout << "Status: " << (item->getStatus() ? "true" : "false") << "; ";
         }
         std::cout << std::endl;
     }

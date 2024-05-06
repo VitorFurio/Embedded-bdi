@@ -20,6 +20,7 @@
 #include "bdi/plan_base.h"
 #include "bdi/intention_base.h"
 #include "communication/hash_table.h"
+#include "communication/communicator.h"
 #include "../../data/functions.h"
 
 class AgentSettings
@@ -35,7 +36,7 @@ private:
   EventBase event_base;
   PlanBase plan_base;
   IntentionBase intention_base;
-  HashTable table; //Map of propositions used for communication.
+  HashTable table; // Map of propositions used for communication.
 
 public:
   AgentSettings()
@@ -44,6 +45,15 @@ public:
     event_base = EventBase(6);
     plan_base = PlanBase(3);
     intention_base = IntentionBase(10, 4);
+
+
+    // Mapping propositions to enable communication between agents.
+    table.addItem("happy", 0, true);
+    table.addItem(".broadcast", 3, true);
+    table.addItem("start", 1, true);
+    table.addItem("say_hello", 4, true);
+    table.addItem("hello", 2, true);
+    Communicator communicator(&table);
 
     //--------------------------------------------------------------------------
 
@@ -79,7 +89,7 @@ public:
     body_1.add_instruction(inst_0_1);
 
     Proposition prop_1_body_1(3);
-    BodyInstruction inst_1_1(BodyType::INTERNAL_ACTION, prop_1_body_1, internal_action_broadcast);
+    BodyInstruction inst_1_1(BodyType::INTERNAL_ACTION, prop_1_body_1, communicator.internal_action_broadcast);
     /* ToBeUncommented: */inst_1_1.add_arg(CENUMFOR_ILF::TELL);
     //* ToBeUncommented: /inst_1_1.add_arg(belief_happy);
     body_1.add_instruction(inst_1_1);
@@ -99,13 +109,6 @@ public:
 
     Plan plan_2(EventOperator::GOAL_ADDITION, prop_2, &context_2, &body_2);
     plan_base.add_plan(plan_2);
-  //Mapping propositions to enable communication between agents.
-  table.addItem("happy", 0, true);
-  table.addItem(".broadcast", 3, true);
-  table.addItem("start", 1, true);
-  table.addItem("say_hello", 4, true);
-  table.addItem("hello", 2, true);
-
   }
 
   BeliefBase * get_belief_base()

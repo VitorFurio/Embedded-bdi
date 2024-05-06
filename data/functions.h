@@ -12,7 +12,7 @@ bool action_say_hello()
   return true;
 }
 
-bool internal_action_broadcast()
+bool internal_action_broadcast_externo()
 {
   std::cout << "Recebendo do broadcast:" << std::endl;
  // std::cout << "param 1: " << str1 << std::endl;

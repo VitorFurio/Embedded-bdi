@@ -180,7 +180,8 @@ public class HeaderCreator
              "#include \"bdi/event_base.h\"\n"                                +
              "#include \"bdi/plan_base.h\"\n"                                 +
              "#include \"bdi/intention_base.h\"\n"                            +
-             "#include \"communication/hash_table.h\"\n"                            +
+             "#include \"communication/hash_table.h\"\n"                      +
+             "#include \"communication/communicator.h\"\n"                    +
              "#include \"../../" + function_file + "\""                       +
              "\n\n"                                                           +
              "class AgentSettings\n"                                          +
@@ -198,7 +199,7 @@ public class HeaderCreator
              "  EventBase event_base;\n"                                      +
              "  PlanBase plan_base;\n"                                        +
              "  IntentionBase intention_base;\n"			      +
-             "  HashTable table; //Map of propositions used for communication.\n"; //prop_map in C++ 			      
+             "  HashTable table; // Map of propositions used for communication.\n"; //prop_map in C++ 			      
       out.append(text);
 
       text = "\npublic:\n"                                                    +
@@ -209,7 +210,22 @@ public class HeaderCreator
              "    intention_base = IntentionBase("                            +
              intention_base_size + ", " + intention_stack_size + ");\n";
       out.append(text);
-
+      
+      // Populate prop_map in c++:
+       text = "\n\n    // Mapping propositions to enable communication between agents.\n";
+          out.append(text);
+      for (Map.Entry<String, Integer> entry : prop_map.entrySet()) {
+          String key = entry.getKey();
+          Integer value = entry.getValue();
+          //System.out.println("  table.addItem(\"" + key + "\", "+ value + ", true);");
+          text = "    table.addItem(\"" + key + "\", "+ value + ", true);\n";
+          out.append(text);
+      }
+      
+      // Creation of Communicator
+      text = "    Communicator communicator(&table);\n";
+      out.append(text);
+      
       // Creation of beliefs
       for (String belief : beliefs.keySet())
       {
@@ -283,7 +299,7 @@ public class HeaderCreator
           String arg_terms = "";
           if (body.getType() == BodyInstruction.BodyType.INTERNAL_ACTION) {
             if (body.getProposition().equals(".broadcast")) {
-               argument = "internal_action_broadcast";
+               argument = "communicator.internal_action_broadcast";
                // JH: for .broadcast
                // TODO: remove comments when C side is ready for call .add_arg
                arg_terms += "    /* ToBeUncommented: */" + inst_id + ".add_arg(CENUMFOR_ILF::"+ body.getArgs().get(0).toUpperCase()+");\n";
@@ -323,21 +339,7 @@ public class HeaderCreator
         plan_count++;
         context_count++;
       }
-
-      //populate prop_map in c++:
-       text = "  //Mapping propositions to enable communication between agents.\n";
-          out.append(text);
-      for (Map.Entry<String, Integer> entry : prop_map.entrySet()) {
-          String key = entry.getKey();
-          Integer value = entry.getValue();
-          //System.out.println("  table.addItem(\"" + key + "\", "+ value + ", true);");
-          text = "  table.addItem(\"" + key + "\", "+ value + ", true);\n";
-          out.append(text);
-      }
-      text = "\n";
-      out.append(text);
-      
-      
+       
       text = "  }\n\n";
       out.append(text);
     
