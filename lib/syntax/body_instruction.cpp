@@ -7,6 +7,11 @@
 
 #include "body_instruction.h"
 
+// For internal action
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 BodyInstruction::BodyInstruction(BodyType type,
                                  Proposition prop,
                                  bool (*take_action)())
@@ -16,6 +21,9 @@ BodyInstruction::BodyInstruction(BodyType type,
   _take_action = take_action;
   _operator = EventOperator::BELIEF_ADDITION;
   
+  _prop = prop;
+  //_arg = "teste";
+  //_belief = Belief(0, nullptr, false);
   //_belief = nullptr;
 }
 
@@ -28,19 +36,30 @@ BodyInstruction::BodyInstruction(BodyType type,
   _take_action = nullptr;
   _operator = event_operator;
   
-  //_belief = nullptr;
+  _prop = prop;
+  //_arg = "char";
+ // _belief = Belief(_prop, nullptr, false);
+ // _belief = nullptr;
 }
 
 // For internal action:
-//BodyInstruction::BodyInstruction(BodyType type,
-//                                 Proposition prop,
-//                                 bool (*take_internal_action)(const std::string&))
-//{
-//  _type = type;
-//  _proposition = prop;
-//  _take_internal_action = take_internal_action;
-// _operator = EventOperator::BELIEF_ADDITION;
-//}
+BodyInstruction::BodyInstruction(BodyType type,
+                                 Proposition prop,
+                                 bool (*take_action)(),
+                                 Proposition prop2)
+{
+ _type = type;
+  _proposition = prop;
+  _take_action = take_action;
+  _operator = EventOperator::BELIEF_ADDITION;
+  
+  _prop = prop2;
+  //_arg = "char";
+  //_belief = Belief(_prop, nullptr, false);
+ // _belief = nullptr;
+}
+
+
 
 // Add handling of belief that is not in beliefbase
 BodyReturn BodyInstruction::run_instruction(BeliefBase * belief_base,
@@ -59,7 +78,15 @@ BodyReturn BodyInstruction::run_instruction(BeliefBase * belief_base,
   else if (_type == BodyType::INTERNAL_ACTION)
   {
     bool value = _take_action();
-    result = BodyReturn(BodyType::ACTION, value, nullptr);
+    printf("ILF: %d\n", static_cast<int>(_ilf));
+    printf("Prop Name(belief): %u\n", _prop.get_name());
+    printf("Prop Name(instruction): %u\n", _proposition.get_name());
+    
+ //   printf("Belief Prop: %u\n", _belief->get_proposition().get_name());
+ //   printf("Belief State: %d\n", _belief->get_state());
+ 
+    printf("\n");
+    result = BodyReturn(BodyType::INTERNAL_ACTION, value, nullptr);
   }
   
   else if (_type == BodyType::BELIEF)
@@ -118,9 +145,13 @@ void BodyInstruction::add_arg(CENUMFOR_ILF ilf){
    _ilf = ilf;
 }
 
-//void BodyInstruction::add_arg(Belief belief){
+//void BodyInstruction::add_arg(Belief* belief){
  //  _belief = belief;
 //}
+
+void BodyInstruction::add_arg(Proposition prop){
+   _prop = prop;
+}
 
 
 

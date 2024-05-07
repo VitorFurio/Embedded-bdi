@@ -5,12 +5,16 @@
 
 #include "hash_table.h"
 #include "mqtt_functions.h"
+#include "../bdi/belief.h"
+#include "../syntax/cenumfor_ilf.h"
 
 class Communicator {
 private:
     static HashTable* _table;
     static MQTTClient* _client;
-
+    static Belief* _belief;
+    CENUMFOR_ILF _ilf;
+     
 public:
     // Construtor que recebe um ponteiro para um objeto HashTable
     Communicator();

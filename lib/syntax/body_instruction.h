@@ -32,12 +32,15 @@ private:
   BodyType _type;
   
   // For internal actions:
-  CENUMFOR_ILF _ilf;
   //Belief _belief;
+  //std::string _arg; 
+  Proposition _prop;
+  CENUMFOR_ILF _ilf;
+  
   
   //bool *_belief;
-  char _arg[4] = "ola";
-  // std::string _arg; 
+  //char minhaString[20];
+  
   //bool (*_take_internal_action)();
 
 public:
@@ -50,8 +53,7 @@ public:
   BodyInstruction(BodyType type, Proposition prop, bool (*take_action)());
 
   // For internal actions: 
-  BodyInstruction(BodyType type, Proposition prop, bool (*take_internal_action)(const std::string&));
-
+  BodyInstruction(BodyType type,Proposition prop,bool (*take_action)(),Proposition prop2);
   /**
    * Constructor for Belief and Goal events
    * @param type Type of body instruction
@@ -78,10 +80,8 @@ public:
   
   // For internal actions:
   void add_arg(CENUMFOR_ILF ilf);
-  //void add_arg(Belief belief);
-  //void add_arg(Belief * belief) {
-   //     _belief = belief; // Modifica o objeto _belief_happy para ser igual ao objeto belief
-   // }
+ // void add_arg(Belief* belief);
+  void add_arg(Proposition prop);
   
 };
 
