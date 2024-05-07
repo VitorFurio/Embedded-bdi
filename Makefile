@@ -23,6 +23,8 @@ VALGRIND_EXEC ?= valgrind.out
 DOCS_DIR ?= ./docs
 BUILD_DIR ?= ./build
 
+CFLAGS=-lpaho-mqtt3c
+
 ############################### Agent variables ################################
 AGENT_DIRS ?= ./lib ./data ./src
 AGENT_SRCS := $(shell find $(AGENT_DIRS) -name *.cpp -or -name *.c -or -name *.s -or -name *.cc)
@@ -32,7 +34,7 @@ AGENT_INC_DIRS := $(shell find $(AGENT_DIRS) -type d ! -path '*/Debug*')
 AGENT_INC_FLAGS := $(addprefix -I,$(AGENT_INC_DIRS))
 
 $(BUILD_DIR)/$(AGENT_EXEC): $(AGENT_OBJS)
-	$(CXX) $(AGENT_OBJS) -o $@ $(LDFLAGS)
+	$(CXX) $(AGENT_OBJS) $(CFLAGS) -o $@ $(LDFLAGS)
 
 ################################ Test variables ################################
 TEST_DIRS ?= ./lib ./test

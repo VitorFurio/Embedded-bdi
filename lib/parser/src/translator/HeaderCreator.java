@@ -199,7 +199,8 @@ public class HeaderCreator
              "  EventBase event_base;\n"                                      +
              "  PlanBase plan_base;\n"                                        +
              "  IntentionBase intention_base;\n"			      +
-             "  HashTable table; // Map of propositions used for communication.\n"; //prop_map in C++ 			      
+             "  HashTable table; // Map of propositions used for communication.\n" + 
+             "  Communicator communicator; // Object used for communication.\n"; //prop_map in C++ 			      
       out.append(text);
 
       text = "\npublic:\n"                                                    +
@@ -223,7 +224,9 @@ public class HeaderCreator
       }
       
       // Creation of Communicator
-      text = "    Communicator communicator(&table);\n";
+      //text = "    Communicator communicator(&table);\n";
+      text = "    communicator = Communicator(&table);\n";
+      	     //"    communicator = &com;\n";
       out.append(text);
       
       // Creation of beliefs
@@ -354,6 +357,9 @@ public class HeaderCreator
              "  }\n\n"                                                        +
              "  IntentionBase * get_intention_base()\n  {\n"                  +
              "    return &intention_base;\n"                                  +
+             "  }\n"                                                          +
+             "  Communicator * get_communicator()\n  {\n"                     +
+             "    return &communicator;\n"                                     +
              "  }\n"                                                          +
              "};\n\n#endif /*"                                                +
              "CONFIGURATION_H_ */";

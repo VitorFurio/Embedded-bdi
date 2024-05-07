@@ -24,8 +24,6 @@ void Agent::run()
   // Update beliefs
   beliefs->update(events);
  
-  	
-  
   // Checks if there are events to be processed
   if (!events->is_empty())
   {

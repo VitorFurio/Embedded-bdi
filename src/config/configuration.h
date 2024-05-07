@@ -37,6 +37,7 @@ private:
   PlanBase plan_base;
   IntentionBase intention_base;
   HashTable table; // Map of propositions used for communication.
+  Communicator communicator; // Object used for communication.
 
 public:
   AgentSettings()
@@ -53,7 +54,7 @@ public:
     table.addItem("start", 1, true);
     table.addItem("say_hello", 4, true);
     table.addItem("hello", 2, true);
-    Communicator communicator(&table);
+    communicator = Communicator(&table);
 
     //--------------------------------------------------------------------------
 
@@ -129,6 +130,10 @@ public:
   IntentionBase * get_intention_base()
   {
     return &intention_base;
+  }
+  Communicator * get_communicator()
+  {
+    return &communicator;
   }
 };
 

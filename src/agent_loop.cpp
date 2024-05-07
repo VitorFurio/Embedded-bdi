@@ -19,7 +19,16 @@ int main()
   PlanBase * plans = agent_settings.get_plan_base();
   IntentionBase * intentions = agent_settings.get_intention_base();
 
+  Communicator * communicator = agent_settings.get_communicator();
+
   Agent agent(beliefs, events, plans, intentions);
+  
+  // Communication setup:
+  MQTTClient client;
+  communicator->setClient(&client);
+  
+  //communicator->printHashTable();
+  
 
   while(true)
   {
