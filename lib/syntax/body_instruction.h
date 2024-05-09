@@ -33,7 +33,7 @@ private:
   
   // For internal actions:
   //Belief _belief;
-  //std::string _arg; 
+  //const std::string _arg; 
   Proposition _prop;
   CENUMFOR_ILF _ilf;
   

@@ -34,6 +34,7 @@ public:
     Item* searchByNumber(uint8_t number);
     void updateStatus(const std::string& name, bool newStatus); // Atualizado
     void print();
+    int size() const;
     ~HashTable();
 };
 

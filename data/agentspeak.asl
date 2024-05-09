@@ -1,5 +1,7 @@
 // file used to test translator
 +sad.
++teste.
+
 !start.
 
 +!start <- +happy.

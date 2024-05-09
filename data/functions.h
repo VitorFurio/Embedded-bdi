@@ -28,6 +28,12 @@ bool update_hello()
   return true;
 }
 
+bool update_teste()
+{
+  std::cout << "Função da Belief teste" << std::endl;
+  return true;
+}
+
 //bool internal_action_broadcast(const std::string& msg)
 //bool internal_action_broadcast()
 //{

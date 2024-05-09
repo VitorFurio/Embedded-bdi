@@ -181,6 +181,7 @@ public class HeaderCreator
              "#include \"bdi/plan_base.h\"\n"                                 +
              "#include \"bdi/intention_base.h\"\n"                            +
              "#include \"communication/hash_table.h\"\n"                      +
+             "#include \"communication/msg_list.h\"\n"                      +
              "#include \"communication/communicator.h\"\n"                    +
              "#include \"../../" + function_file + "\""                       +
              "\n\n"                                                           +
@@ -199,7 +200,8 @@ public class HeaderCreator
              "  EventBase event_base;\n"                                      +
              "  PlanBase plan_base;\n"                                        +
              "  IntentionBase intention_base;\n"			      +
-             "  HashTable table; // Map of propositions used for communication.\n" + 
+             " // HashTable table; // Map of propositions used for communication.\n" + 
+             "  MsgList table; // Map of propositions used for communication.\n" + 
              "  Communicator communicator; // Object used for communication.\n"; //prop_map in C++ 			      
       out.append(text);
 
@@ -219,7 +221,7 @@ public class HeaderCreator
           String key = entry.getKey();
           Integer value = entry.getValue();
           //System.out.println("  table.addItem(\"" + key + "\", "+ value + ", true);");
-          text = "    table.addItem(\"" + key + "\", "+ value + ", true);\n";
+          text = "    table.addItem(\"" + key + "\", "+ value + ", false);\n";
           out.append(text);
       }
       

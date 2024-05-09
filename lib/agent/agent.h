@@ -12,6 +12,7 @@
 #include "../bdi/event_base.h"
 #include "../bdi/intention_base.h"
 #include "../bdi/plan_base.h"
+#include "../communication/communicator.h"
 
 /**
  * Implements the agent reasoning cycle.
@@ -25,12 +26,14 @@ private:
   IntentionBase * intentions;
   Plan * plan_to_act;
   Event event_to_process;
+  Communicator * communicator; // Add communicator object
 
 public:
   Agent(BeliefBase * beliefs,
         EventBase * events,
         PlanBase * plans,
-        IntentionBase * intentions);
+        IntentionBase * intentions,
+        Communicator * communicator);
 
   /**
    * Runs an iteration of the agent reasoning cycle

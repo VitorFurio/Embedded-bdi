@@ -10,13 +10,15 @@
 Agent::Agent(BeliefBase * beliefs,
              EventBase * events,
              PlanBase * plans,
-             IntentionBase * intentions)
+             IntentionBase * intentions,
+             Communicator * communicator)
 {
   this->beliefs = beliefs;
   this->events = events;
   this->plans = plans;
   this->intentions = intentions;
   this->plan_to_act = nullptr;
+  this->communicator = communicator;
 }
 
 void Agent::run()
@@ -24,6 +26,8 @@ void Agent::run()
   // Update beliefs
   beliefs->update(events);
  
+  //communicator->update(beliefs, events); 
+  
   // Checks if there are events to be processed
   if (!events->is_empty())
   {

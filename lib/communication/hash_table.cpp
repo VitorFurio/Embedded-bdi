@@ -69,6 +69,10 @@ void HashTable::print() {
     }
 }
 
+int HashTable::size() const {
+    return HASH_SIZE;
+}
+
 HashTable::~HashTable() {
     for (auto& bucket : hashTable) {
         for (Item* item : bucket) {
