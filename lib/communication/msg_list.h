@@ -11,11 +11,11 @@ struct Item_list {
     std::string name;
     uint8_t number;
     bool status;
-    CENUMFOR_ILF _ilf;
+    CENUMFOR_ILF ilf;
     Item_list* next;
 
     // Construtor para inicializar os membros
-    Item_list(const std::string& itemName, uint8_t itemNumber, bool itemStatus, CENUMFOR_ILF _ilf);
+    Item_list(const std::string& itemName, uint8_t itemNumber, bool itemStatus, CENUMFOR_ILF ilf);
 };
 
 class MsgList {
@@ -53,6 +53,9 @@ public:
 
     // Função para obter o tamanho da lista
     int getSize();
+
+    Item_list* getHead();
+
     void print();
 };
 

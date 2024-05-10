@@ -12,6 +12,12 @@ bool action_say_hello()
   return true;
 }
 
+bool action_say_test()
+{
+  std::cout << "Saying test..." << std::endl;
+  return true;
+}
+
 bool internal_action_broadcast_externo()
 {
   std::cout << "Recebendo do broadcast:" << std::endl;

@@ -2,7 +2,7 @@
 
 // Implementação do construtor da estrutura Item
 Item_list::Item_list(const std::string& itemName, uint8_t itemNumber, bool itemStatus, CENUMFOR_ILF ilf)
-    : name(itemName), number(itemNumber), status(itemStatus), _ilf(ilf), next(nullptr) {}
+    : name(itemName), number(itemNumber), status(itemStatus), ilf(ilf), next(nullptr) {}
 
 // Implementação do construtor da classe MsgList
 MsgList::MsgList() : head(nullptr), size(0) {}
@@ -95,11 +95,15 @@ int MsgList::getSize() {
     return size;
 }
 
+Item_list* MsgList::getHead(){
+    return head;
+}
+
 void MsgList::print() {
     Item_list* current = head;
     std::cout << "Lista de Itens:" << std::endl;
     while (current != nullptr) {
-        std::cout << "- Número: " << static_cast<int>(current->number) << ", Status: " << current->status << ", ILF: " << static_cast<int>(current->_ilf) << ", Nome: " << current->name << std::endl;
+        std::cout << "- Número: " << static_cast<int>(current->number) << ", Status: " << current->status << ", ILF: " << static_cast<int>(current->ilf) << ", Nome: " << current->name << std::endl;
         current = current->next;
     }
     std::cout << std::endl;

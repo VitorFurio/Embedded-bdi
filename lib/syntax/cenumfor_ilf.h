@@ -14,6 +14,7 @@
 enum class CENUMFOR_ILF : unsigned char
 {
   TELL,
+  UNTELL,
   ACHIEVE
 };
 

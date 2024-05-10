@@ -1,6 +1,8 @@
 // file used to test translator
 +sad.
-+teste.
+//+teste.
+
++test : test2 <- say_test.
 
 !start.
 
