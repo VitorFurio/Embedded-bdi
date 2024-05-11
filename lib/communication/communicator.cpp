@@ -5,33 +5,26 @@
 #include <sstream>
 #include <string>
 
-HashTable* Communicator::_table = nullptr; //Deletar
-
 MsgList* Communicator::_list= nullptr;
 MQTTClient* Communicator::_client = nullptr;
-Belief* Communicator::_belief = nullptr;
+
+//Belief* Communicator::_belief = nullptr; // para envio de mensagens.
 
 Communicator::Communicator() {}
-Communicator::Communicator(HashTable* hashTable) {
-    _table = hashTable;
-}
 Communicator::Communicator(MsgList* list) {
     _list = list;
 }
 
+// ---------------------------------Fuções auxiliares-----------------------------------
 int parseMessage(const std::string& message, std::string& ilf, std::string& prop) {
     size_t pos = message.find('/');
-    if (pos == std::string::npos) {
-        //std::cerr << "Erro: Formato da mensagem inválido. Esperado 'ILF'/'prop'" << std::endl;
+    if (pos == std::string::npos) 
         return 0; 
-    }
     std::istringstream iss(message);
     std::getline(iss, ilf, '/');
     std::getline(iss, prop);
-    if (ilf.empty() || prop.empty()) {
-        //std::cerr << "Erro: Parte da mensagem está vazia." << std::endl;
+    if (ilf.empty() || prop.empty()) 
         return 0; 
-    }
     return 1; 
 }
 
@@ -48,16 +41,7 @@ std::pair<bool, CENUMFOR_ILF> stringToILF(const std::string& string) {
         return {false, CENUMFOR_ILF::TELL}; 
     }
 }
-
-void Communicator::setClient(MQTTClient* client){
-     if (setup_mqtt_client(client) != 0) {
-         std::cout << "ERROR: Falha ao inicializar o cliente MQTT.\n" << std::endl;
-    }
-    _client = client;
-    subscribe_topic(client, "Hello"); //TODO: Fução de se increver em um tópico. Validar se ela ocorreu corretamente.
-    subscribe_topic(client, "Agent1");
-    std::cout << "Cliente configurado!\n" << std::endl;
-}
+// ---------------------------------------------------------------------------------------
 
 void Communicator::update(BeliefBase * belief_base, EventBase * event_base)
 {
@@ -110,22 +94,6 @@ void Communicator::update(BeliefBase * belief_base, EventBase * event_base)
   }
 }
 
-//void Communicator::printHashTable() {
-//    _table->print();
-//}
-
-// bool Communicator::internal_action_broadcast()
-// {
-//   std::cout << "Communicator Broadcast!" << std::endl;
-//   std::cout << "Valores da proposição happy:" << std::endl;
-//   std::cout << "Name: " << _table->searchByName("happy")->getName() << std::endl;
-//   std::cout << "Status: " << _table->searchByName("happy")->getStatus() << std::endl;
-//   //std::cout << "Number: " << static_cast<int>(_table->searchByName("happy")->getNumber()) << std::endl;
-//   printf("Number: %u\n\n", _table->searchByName("happy")->getNumber());
-//   //_table->print();
-//   return true;
-// }
-
 bool Communicator::internal_action_broadcast()
 {
   std::cout << "Communicator Broadcast!" << std::endl;
@@ -140,9 +108,18 @@ bool Communicator::internal_action_broadcast()
 Communicator::~Communicator() {}
 
 
-// ## Funções para manipular o protocolo MQTT: 
+// ============================Funções para manipular o protocolo MQTT ================================== 
 
-// Callback chamada quando uma mensagem é recebida
+void Communicator::setClient(MQTTClient* client){
+     if (setup_mqtt_client(client) != 0) {
+         std::cout << "ERROR: Falha ao inicializar o cliente MQTT.\n" << std::endl;
+    }
+    _client = client;
+    subscribe_topic(client, "Hello"); //TODO: Fução de se increver em um tópico. Validar se ela ocorreu corretamente.
+    subscribe_topic(client, "Agent1");
+    std::cout << "Cliente configurado!\n" << std::endl;
+}
+
 int Communicator::messageArrived(void *context, char *topicName, int topicLen, MQTTClient_message *message) 
 {
     printf("Message arrived on topic \"%s\": %.*s\n", topicName, message->payloadlen, (char *)message->payload);

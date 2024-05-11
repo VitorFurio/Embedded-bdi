@@ -8,9 +8,9 @@
 
 // Estrutura para armazenar os dados do item
 struct Item_list {
-    std::string name;
-    uint8_t number;
-    bool status;
+    std::string name; //prop name
+    uint8_t number; // prop number
+    bool status; // true if received an message
     CENUMFOR_ILF ilf;
     Item_list* next;
 

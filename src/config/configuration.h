@@ -24,7 +24,6 @@
 #include "bdi/event_base.h"
 #include "bdi/plan_base.h"
 #include "bdi/intention_base.h"
-#include "communication/hash_table.h"
 #include "communication/msg_list.h"
 #include "communication/communicator.h"
 #include "../../data/functions.h"
@@ -48,8 +47,7 @@ private:
   EventBase event_base;
   PlanBase plan_base;
   IntentionBase intention_base;
- // HashTable table; // Map of propositions used for communication.
-  MsgList table; // Map of propositions used for communication.
+  MsgList list; // List of propositions used for communication.
   Communicator communicator; // Object used for communication.
 
 public:
@@ -62,15 +60,15 @@ public:
 
 
     // Mapping propositions to enable communication between agents.
-    table.addItem("test2", 2, false);
-    table.addItem("test", 1, false);
-    table.addItem("happy", 0, false);
-    table.addItem(".broadcast", 5, false);
-    table.addItem("start", 3, false);
-    table.addItem("say_test", 4, false);
-    table.addItem("say_hello", 7, false);
-    table.addItem("hello", 6, false);
-    communicator = Communicator(&table);
+    list.addItem("test2", 2, false);
+    list.addItem("test", 1, false);
+    list.addItem("happy", 0, false);
+    list.addItem(".broadcast", 5, false);
+    list.addItem("start", 3, false);
+    list.addItem("say_test", 4, false);
+    list.addItem("say_hello", 7, false);
+    list.addItem("hello", 6, false);
+    communicator = Communicator(&list);
 
     //--------------------------------------------------------------------------
 
@@ -118,7 +116,7 @@ public:
     Proposition prop_1_body_0(5);
     BodyInstruction inst_0_1(BodyType::INTERNAL_ACTION, prop_1_body_0, communicator.internal_action_broadcast,belief_happy.get_proposition());
     /* ToBeUncommented: */inst_0_1.add_arg(CENUMFOR_ILF::ACHIEVE);
-    ///* ToBeUncommented: */inst_0_1.add_arg(&belief_happy);
+    ///* ToBeUncommented: */inst_0_1.add_arg(belief_happy);
     /* ToBeUncommented: */inst_0_1.add_arg(belief_happy.get_proposition());
     body_1.add_instruction(inst_0_1);
 
@@ -151,7 +149,7 @@ public:
     Proposition prop_3_body_1(5);
     BodyInstruction inst_1_3(BodyType::INTERNAL_ACTION, prop_3_body_1, communicator.internal_action_broadcast,belief_happy.get_proposition());
     /* ToBeUncommented: */inst_1_3.add_arg(CENUMFOR_ILF::ACHIEVE);
-    ///* ToBeUncommented: */inst_1_3.add_arg(&belief_happy);
+    ///* ToBeUncommented: */inst_1_3.add_arg(belief_happy);
     /* ToBeUncommented: */inst_1_3.add_arg(belief_happy.get_proposition());
     body_3.add_instruction(inst_1_3);
 
