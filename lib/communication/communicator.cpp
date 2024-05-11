@@ -19,21 +19,33 @@ Communicator::Communicator(MsgList* list) {
     _list = list;
 }
 
-void parseMessage(const std::string& message, std::string& command, std::string& content) {
+int parseMessage(const std::string& message, std::string& ilf, std::string& prop) {
+    size_t pos = message.find('/');
+    if (pos == std::string::npos) {
+        //std::cerr << "Erro: Formato da mensagem inválido. Esperado 'ILF'/'prop'" << std::endl;
+        return 0; 
+    }
     std::istringstream iss(message);
-    std::getline(iss, command, '/');
-    std::getline(iss, content);
+    std::getline(iss, ilf, '/');
+    std::getline(iss, prop);
+    if (ilf.empty() || prop.empty()) {
+        //std::cerr << "Erro: Parte da mensagem está vazia." << std::endl;
+        return 0; 
+    }
+    return 1; 
 }
 
-CENUMFOR_ILF stringToILF(const std::string& string) {
+std::pair<bool, CENUMFOR_ILF> stringToILF(const std::string& string) {
     if (string == "TELL") {
-        return CENUMFOR_ILF::TELL;
+        return {true, CENUMFOR_ILF::TELL};
     } else if (string == "UNTELL") {
-        return CENUMFOR_ILF::UNTELL;
+        return {true, CENUMFOR_ILF::UNTELL};
     } else if (string == "ACHIEVE") {
-        return CENUMFOR_ILF::UNTELL;
+        return {true, CENUMFOR_ILF::ACHIEVE};
+    } else if (string == "UNACHIEVE") {
+        return {true, CENUMFOR_ILF::UNACHIEVE};    
     } else {
-        return CENUMFOR_ILF::TELL;
+        return {false, CENUMFOR_ILF::TELL}; 
     }
 }
 
@@ -70,13 +82,26 @@ void Communicator::update(BeliefBase * belief_base, EventBase * event_base)
                         current->status = false;
                         break;
                     case CENUMFOR_ILF::UNTELL:
-                        //printf("\n UNTELL não implementado\n");
+                        prop = Proposition(current->number);
+                        event = Event(EventOperator::BELIEF_DELETION, prop);
+                        belief_base->change_belief_state(prop, false);
+                        event_base->add_event(event);
+                        current->status = false;
                         break;
                     case CENUMFOR_ILF::ACHIEVE:
-                        //printf("\n ACHIEVE não implementado\n");
+                        prop = Proposition(current->number);
+                        event = Event(EventOperator::GOAL_ADDITION, prop);
+                        event_base->add_event(event);
+                        current->status = false;
+                        break;
+                    case CENUMFOR_ILF::UNACHIEVE:
+                        prop = Proposition(current->number);
+                        event = Event(EventOperator::GOAL_DELETION, prop);
+                        event_base->add_event(event);
+                        current->status = false;
                         break;
                     default:
-                        std::cout << "Erro na recepção da mensagem: " << current->name << std::endl;
+                        std::cout << "Erro na atualização dos eventos recebidos por mensagem. " << current->name << std::endl;
                 }
             }
         }
@@ -114,18 +139,33 @@ bool Communicator::internal_action_broadcast()
 
 Communicator::~Communicator() {}
 
+
 // ## Funções para manipular o protocolo MQTT: 
 
 // Callback chamada quando uma mensagem é recebida
-int Communicator::messageArrived(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
+int Communicator::messageArrived(void *context, char *topicName, int topicLen, MQTTClient_message *message) 
+{
     printf("Message arrived on topic \"%s\": %.*s\n", topicName, message->payloadlen, (char *)message->payload);
     std::string msg_ilf, msg_prop;
-    parseMessage((char *)message->payload, msg_ilf, msg_prop);
-    //std::cout << "ILF da mensagem: " << msg_ilf << std::endl;
-    //std::cout << "Prop da mensagem: " << msg_prop << std::endl;
-    Item_list* item = _list->searchByName(msg_prop);
-    item->status = true;
-    item->ilf = stringToILF(msg_ilf);
+    if(parseMessage((char *)message->payload, msg_ilf, msg_prop)) //mensagem do topico MQTT é no formato esperado.
+    {
+        auto result = stringToILF(msg_ilf);
+        bool ilf_exists = result.first;
+        CENUMFOR_ILF ilf = result.second; 
+        if (ilf_exists) // ILF da mensagem é válido
+        {
+            Item_list* item = _list->searchByName(msg_prop);
+            if (item != nullptr) // Encontrou a prop
+            {
+                item->status = true;
+                item->ilf = ilf;
+            }
+            else std::cout << "Erro ao converter a mensagem: A proposição <" <<msg_prop<<"> não existe na base do agente." << std::endl;
+        }
+        else std::cout << "Erro ao converter a mensagem: ILF <" <<msg_ilf<<"> não é válido." << std::endl;
+    }
+    else std::cout << "Erro ao converter a mensagem: Formato da mensagem inválido. Esperado 'ILF/prop'." << std::endl;
+    
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
     return 1;

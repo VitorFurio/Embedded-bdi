@@ -15,7 +15,8 @@ enum class CENUMFOR_ILF : unsigned char
 {
   TELL,
   UNTELL,
-  ACHIEVE
+  ACHIEVE,
+  UNACHIEVE
 };
 
 #endif /* SYNTAX_CENUMFOR_ILF_H_ */
