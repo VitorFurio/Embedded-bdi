@@ -12,19 +12,6 @@ bool action_say_hello()
   return true;
 }
 
-bool action_say_test()
-{
-  std::cout << "Saying test..." << std::endl;
-  return true;
-}
-
-bool internal_action_broadcast_externo()
-{
-  std::cout << "Recebendo do broadcast:" << std::endl;
- // std::cout << "param 1: " << str1 << std::endl;
- // std::cout << "param 2: " << str2 << std::endl;
-  return true;
-}
 
 bool update_hello()
 {
@@ -33,19 +20,5 @@ bool update_hello()
                "I am terminated" << std::endl;
   return true;
 }
-
-bool update_teste()
-{
-  std::cout << "Função da Belief teste" << std::endl;
-  return true;
-}
-
-//bool internal_action_broadcast(const std::string& msg)
-//bool internal_action_broadcast()
-//{
-//  std::cout << "Recebendo do broadcast:" << std::endl;
-  //std::cout << "param 1: " << msg << std::endl;
-//  return true;
-//}
 
 #endif /* FUNCTIONS_H_ */

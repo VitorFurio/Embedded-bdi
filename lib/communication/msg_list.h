@@ -3,19 +3,19 @@
 
 #include <iostream>
 #include <string>
-#include <cstdint>
 #include "../syntax/cenumfor_ilf.h"
+#include "../syntax/proposition.h"
 
 // Estrutura para armazenar os dados do item
 struct Item_list {
-    std::string name; //prop name
-    uint8_t number; // prop number
-    bool status; // true if received an message
+    std::string name; // Nome da propriedade
+    Proposition prop; // Objeto Proposition substituindo 'number'
+    bool status; // true se recebeu uma mensagem
     CENUMFOR_ILF ilf;
     Item_list* next;
 
     // Construtor para inicializar os membros
-    Item_list(const std::string& itemName, uint8_t itemNumber, bool itemStatus, CENUMFOR_ILF ilf);
+    Item_list(const std::string& itemName, Proposition itemProp, bool itemStatus, CENUMFOR_ILF ilf);
 };
 
 class MsgList {
@@ -31,25 +31,20 @@ public:
     ~MsgList();
 
     // Função para inserir um novo item na lista
-    void addItem(const std::string& name, uint8_t number, bool status);
+    void addItem(const std::string& name, uint8_t propNumber, bool status);  
 
-    // Função para buscar um item pelo nome
     Item_list* searchByName(const std::string& name);
-
-    // Função para buscar um item pelo número
-    Item_list* searchByNumber(uint8_t number);
-
-    // Função para definir o status de um item pelo nome
+    bool getStatusByName(const std::string& name);
     void setStatusByName(const std::string& name, bool newStatus);
 
-    // Função para definir o status de um item pelo número
-    void setStatusByNumber(uint8_t number, bool newStatus);
+    // Função para buscar um item pela Proposition
+    Item_list* searchByProposition(Proposition prop);
 
-    // Função para obter o status de um item pelo nome
-    bool getStatusByName(const std::string& name);
+    // Função para definir o status de um item pela Proposition
+    void setStatusByProposition(Proposition prop, bool newStatus);
 
-    // Função para obter o status de um item pelo número
-    bool getStatusByNumber(uint8_t number);
+    // Função para obter o status de um item pela Proposition
+    bool getStatusByProposition(Proposition prop);
 
     // Função para obter o tamanho da lista
     int getSize();
@@ -59,6 +54,5 @@ public:
     void print();
 };
 
-
-
 #endif // MSG_LIST_H
+

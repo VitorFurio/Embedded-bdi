@@ -22,10 +22,7 @@ BodyInstruction::BodyInstruction(BodyType type,
   _take_action = take_action;
   _operator = EventOperator::BELIEF_ADDITION;
   
-  _prop = prop;
-  //_arg = "teste";
-  //_belief = Belief(0, nullptr, false);
-  //_belief = nullptr;
+  _internal_action_prop = prop; 
 }
 
 BodyInstruction::BodyInstruction(BodyType type,
@@ -37,30 +34,8 @@ BodyInstruction::BodyInstruction(BodyType type,
   _take_action = nullptr;
   _operator = event_operator;
   
-  _prop = prop;
-  //_arg = "char";
- // _belief = Belief(_prop, nullptr, false);
- // _belief = nullptr;
+  _internal_action_prop = prop;
 }
-
-// For internal action:
-BodyInstruction::BodyInstruction(BodyType type,
-                                 Proposition prop,
-                                 bool (*take_action)(),
-                                 Proposition prop2)
-{
- _type = type;
-  _proposition = prop;
-  _take_action = take_action;
-  _operator = EventOperator::BELIEF_ADDITION;
-  
-  _prop = prop2;
-  //_arg = "char";
-  //_belief = Belief(_prop, nullptr, false);
- // _belief = nullptr;
-}
-
-
 
 // Add handling of belief that is not in beliefbase
 BodyReturn BodyInstruction::run_instruction(BeliefBase * belief_base,
@@ -78,16 +53,16 @@ BodyReturn BodyInstruction::run_instruction(BeliefBase * belief_base,
   // For internal Action
   else if (_type == BodyType::INTERNAL_ACTION)
   {
-    Sender::setDest("broadcast");
+    Sender::setDest("broadcast"); //Alterar para setar o destinatário
     Sender::setIlf(_ilf);
-    Sender::setProp(_prop.get_name());
+    Sender::setProp(_internal_action_prop);
     bool value = _take_action();
     result = BodyReturn(BodyType::INTERNAL_ACTION, value, nullptr);
     
-    //printf("ILF: %d\n", static_cast<int>(_ilf));
-    //printf("Prop Name(belief): %u\n", _prop.get_name());
-    //printf("Prop Name(instruction): %u\n", _proposition.get_name());
-    //printf("\n");
+    // printf("ILF: %d\n", static_cast<int>(_ilf));
+    // printf("Prop Name(belief): %u\n", _prop.get_name());
+    // printf("Prop Name(instruction): %u\n", _proposition.get_name());
+    // printf("\n");
   }
   
   else if (_type == BodyType::BELIEF)
@@ -146,14 +121,6 @@ void BodyInstruction::add_arg(CENUMFOR_ILF ilf){
    _ilf = ilf;
 }
 
-//void BodyInstruction::add_arg(Belief* belief){
- //  _belief = belief;
-//}
-
 void BodyInstruction::add_arg(Proposition prop){
-   _prop = prop;
+   _internal_action_prop = prop;
 }
-
-
-
-

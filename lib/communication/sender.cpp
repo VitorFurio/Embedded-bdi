@@ -1,12 +1,11 @@
-// Sender.cpp
 #include "sender.h"
 
 // Inicialização dos membros estáticos
-uint8_t Sender::_prop = 0;
+Proposition Sender::_prop = Proposition(0);  // Inicializado com o valor padrão usando o construtor de Proposition
 std::string Sender::_dest = "InitialDest";
-CENUMFOR_ILF Sender::_ilf = CENUMFOR_ILF::TELL; // Inicialização com o primeiro valor do enum
+CENUMFOR_ILF Sender::_ilf = CENUMFOR_ILF::TELL;
 
-void Sender::setProp(uint8_t prop) {
+void Sender::setProp(Proposition prop) {
     _prop = prop;
 }
 
@@ -18,7 +17,7 @@ void Sender::setIlf(CENUMFOR_ILF ilf) {
     _ilf = ilf;
 }
 
-uint8_t Sender::getProp() {
+Proposition Sender::getProp() {
     return _prop;
 }
 

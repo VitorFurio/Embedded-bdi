@@ -1,14 +1,7 @@
-// file used to test translator
-//!test.
-
-+test : test2 <- say_test.
-
-+test <- .broadcast(tell,happy).
 !start.
 
 +!start <- +happy.
 
-+happy <- !!hello; .broadcast(tell,test).
++happy <- !!happy .broadcast(achieve,hello).
 
-+!hello <- say_hello.
--!hello <- say_test.
++!hello <- say_hello; .broadcast(tell,happy).

@@ -52,8 +52,8 @@ void Communicator::update(BeliefBase* belief_base, EventBase* event_base) {
     for (Item_list* current = _list->getHead(); current != nullptr; current = current->next) {
         if (current->status) {
             if (!event_base->is_full()) {
-                Proposition prop(current->number);
                 Event event;
+                Proposition prop = current->prop;
                 switch (current->ilf) {
                 case CENUMFOR_ILF::TELL:
                     event = Event(EventOperator::BELIEF_ADDITION, prop);
@@ -110,9 +110,9 @@ bool Communicator::internal_action_broadcast() {
         std::cerr << "Error: MsgList not initialized." << std::endl;
         return false;
     }
-    auto item = _list->searchByNumber(Sender::getProp());
+    auto item = _list->searchByProposition(Sender::getProp());
     if (!item) {
-        std::cerr << "Error: No item found for the provided number." << std::endl;
+        std::cerr << "Error: No item found for the provided proposition." << std::endl;
         return false;
     }
     const char* topic = "broadcast"; 
