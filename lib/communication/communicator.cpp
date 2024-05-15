@@ -80,10 +80,6 @@ void Communicator::update(BeliefBase* belief_base, EventBase* event_base) {
     }
 }
 
-int Communicator::publish_message(const char* topic, const std::string& message) {
-    return MQTTFunctions::publish_message(topic, message);
-}
-
 int Communicator::messageArrived(const std::string& msg) {
     std::string msg_ilf, msg_prop;
     if (parseMessage(msg, msg_ilf, msg_prop)) {
@@ -103,6 +99,10 @@ int Communicator::messageArrived(const std::string& msg) {
         std::cerr << "Error: Invalid message format. Expected 'ILF/prop'." << std::endl;
     }
     return 1;
+}
+
+int Communicator::publish_message(const char* topic, const std::string& message) {
+    return MQTTFunctions::publish_message(topic, message);
 }
 
 bool Communicator::internal_action_broadcast() {

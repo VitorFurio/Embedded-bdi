@@ -1,5 +1,3 @@
-// Em Communicator.h
-
 #ifndef COMMUNICATOR_H
 #define COMMUNICATOR_H
 
@@ -13,7 +11,6 @@
 #include "../syntax/cenumfor_ilf.h"
 #include "../syntax/proposition.h"
 
-#include "MQTTClient.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
