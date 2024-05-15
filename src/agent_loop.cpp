@@ -21,8 +21,8 @@ int main()
   Communicator * communicator = agent_settings.get_communicator();
   
   // Communication setup:
-  MQTTClient client;
-  communicator->setClient(&client);
+  //MQTTClient client;
+  communicator->initializeClient();
   
   Agent agent(beliefs, events, plans, intentions, communicator);
 

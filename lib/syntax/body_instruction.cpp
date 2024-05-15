@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../communication/sender.h"
 
 BodyInstruction::BodyInstruction(BodyType type,
                                  Proposition prop,
@@ -77,16 +78,16 @@ BodyReturn BodyInstruction::run_instruction(BeliefBase * belief_base,
   // For internal Action
   else if (_type == BodyType::INTERNAL_ACTION)
   {
+    Sender::setDest("broadcast");
+    Sender::setIlf(_ilf);
+    Sender::setProp(_prop.get_name());
     bool value = _take_action();
-    printf("ILF: %d\n", static_cast<int>(_ilf));
-    printf("Prop Name(belief): %u\n", _prop.get_name());
-    printf("Prop Name(instruction): %u\n", _proposition.get_name());
-    
- //   printf("Belief Prop: %u\n", _belief->get_proposition().get_name());
- //   printf("Belief State: %d\n", _belief->get_state());
- 
-    printf("\n");
     result = BodyReturn(BodyType::INTERNAL_ACTION, value, nullptr);
+    
+    //printf("ILF: %d\n", static_cast<int>(_ilf));
+    //printf("Prop Name(belief): %u\n", _prop.get_name());
+    //printf("Prop Name(instruction): %u\n", _proposition.get_name());
+    //printf("\n");
   }
   
   else if (_type == BodyType::BELIEF)

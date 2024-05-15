@@ -2,22 +2,38 @@
 #define MQTT_FUNCTIONS_H
 
 #include "MQTTClient.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "communicator.h"
+#include <string>
+#include <iostream>
 
 #define ADDRESS     "mqtt://mqtt.eclipseprojects.io"
 #define CLIENTID    "AgentSender"
 #define QOS         1
 #define TIMEOUT     10000L
 
-int setup_mqtt_client(MQTTClient *client);
-//int subscribe_topic(MQTTClient client, const char *topic);
-int subscribe_topic(MQTTClient *client_ptr, const char *topic);
+class MQTTFunctions {
+public:
+    // Initializes the MQTT client and connects to the broker.
+    static void initializeClient();
 
-int publish_message(MQTTClient client, const char *topic, const char *message);
-int messageArrived(void *context, char *topicName, int topicLen, MQTTClient_message *message);
-int disconnect_mqtt_client(MQTTClient client);
+    // Setup the MQTT client with the necessary callbacks and configurations.
+    static int setup_mqtt_client(MQTTClient* client);
 
-#endif /* MQTT_FUNCTIONS_H */
+    // Subscribe to a given topic.
+    static int subscribe_topic(const std::string& topic);
 
+    // Publish a message to a specific topic.
+    static int publish_message(const std::string& topic, const std::string& message);
+
+    // Callback function to handle messages that arrive at subscribed topics.
+    static int messageArrived(void* context, char* topicName, int topicLen, MQTTClient_message* message);
+
+    // Disconnect and clean up the MQTT client.
+    static int disconnect_mqtt_client();
+
+private:
+    // Static member to hold the MQTT client instance.
+    static MQTTClient _client;
+};
+
+#endif // MQTT_FUNCTIONS_H

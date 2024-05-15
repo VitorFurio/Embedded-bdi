@@ -2,16 +2,16 @@
  * AgentSpeak code:
  *
  * // file used to test translator
- * //+teste.
+ * //!test.
  * 
  * +test : test2 <- say_test.
  * 
- * -test2 <- .broadcast(achieve,happy).
+ * +test <- .broadcast(tell,happy).
  * !start.
  * 
  * +!start <- +happy.
  * 
- * +happy <- !!hello; .broadcast(achieve,happy).
+ * +happy <- !!hello; .broadcast(tell,test).
  * 
  * +!hello <- say_hello.
  * -!hello <- say_test.
@@ -109,18 +109,18 @@ public:
 
     //--------------------------------------------------------------------------
 
-    Proposition prop_1(2);
+    Proposition prop_1(1);
     context_1 = Context(0);
     body_1 = Body(1);
 
     Proposition prop_1_body_0(5);
     BodyInstruction inst_0_1(BodyType::INTERNAL_ACTION, prop_1_body_0, communicator.internal_action_broadcast,belief_happy.get_proposition());
-    /* ToBeUncommented: */inst_0_1.add_arg(CENUMFOR_ILF::ACHIEVE);
+    /* ToBeUncommented: */inst_0_1.add_arg(CENUMFOR_ILF::TELL);
     ///* ToBeUncommented: */inst_0_1.add_arg(belief_happy);
     /* ToBeUncommented: */inst_0_1.add_arg(belief_happy.get_proposition());
     body_1.add_instruction(inst_0_1);
 
-    Plan plan_1(EventOperator::BELIEF_DELETION, prop_1, &context_1, &body_1);
+    Plan plan_1(EventOperator::BELIEF_ADDITION, prop_1, &context_1, &body_1);
     plan_base.add_plan(plan_1);
 
     //--------------------------------------------------------------------------
@@ -147,10 +147,10 @@ public:
     body_3.add_instruction(inst_0_3);
 
     Proposition prop_3_body_1(5);
-    BodyInstruction inst_1_3(BodyType::INTERNAL_ACTION, prop_3_body_1, communicator.internal_action_broadcast,belief_happy.get_proposition());
-    /* ToBeUncommented: */inst_1_3.add_arg(CENUMFOR_ILF::ACHIEVE);
-    ///* ToBeUncommented: */inst_1_3.add_arg(belief_happy);
-    /* ToBeUncommented: */inst_1_3.add_arg(belief_happy.get_proposition());
+    BodyInstruction inst_1_3(BodyType::INTERNAL_ACTION, prop_3_body_1, communicator.internal_action_broadcast,belief_test.get_proposition());
+    /* ToBeUncommented: */inst_1_3.add_arg(CENUMFOR_ILF::TELL);
+    ///* ToBeUncommented: */inst_1_3.add_arg(belief_test);
+    /* ToBeUncommented: */inst_1_3.add_arg(belief_test.get_proposition());
     body_3.add_instruction(inst_1_3);
 
     Plan plan_3(EventOperator::BELIEF_ADDITION, prop_3, &context_3, &body_3);
