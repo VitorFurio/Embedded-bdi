@@ -5,7 +5,7 @@
  * 
  * +!start <- +happy.
  * 
- * +happy <- !!happy .broadcast(achieve,hello).
+ * +happy <- .broadcast(achieve,hello).
  * 
  * +!hello <- say_hello; .broadcast(tell,happy).
  */ 
@@ -81,17 +81,13 @@ public:
 
     Proposition prop_1(0);
     context_1 = Context(0);
-    body_1 = Body(2);
+    body_1 = Body(1);
 
-    Proposition prop_1_body_0(0);
-    BodyInstruction inst_0_1(BodyType::GOAL, prop_1_body_0, EventOperator::GOAL_ACHIEVE);
+    Proposition prop_1_body_0(2);
+    BodyInstruction inst_0_1(BodyType::INTERNAL_ACTION, prop_1_body_0, communicator.internal_action_broadcast);
+    /* ToBeUncommented: */inst_0_1.add_arg(CENUMFOR_ILF::ACHIEVE);
+    /* ToBeUncommented: */inst_0_1.add_arg(list.searchByName("hello")->prop);
     body_1.add_instruction(inst_0_1);
-
-    Proposition prop_1_body_1(2);
-    BodyInstruction inst_1_1(BodyType::INTERNAL_ACTION, prop_1_body_1, communicator.internal_action_broadcast);
-    /* ToBeUncommented: */inst_1_1.add_arg(CENUMFOR_ILF::ACHIEVE);
-    /* ToBeUncommented: */inst_1_1.add_arg(list.searchByName("hello")->prop);
-    body_1.add_instruction(inst_1_1);
 
     Plan plan_1(EventOperator::BELIEF_ADDITION, prop_1, &context_1, &body_1);
     plan_base.add_plan(plan_1);

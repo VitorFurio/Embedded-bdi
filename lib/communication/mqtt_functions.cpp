@@ -57,7 +57,7 @@ int MQTTFunctions::publish_message(const std::string& topic, const std::string& 
         return -1;
     }
     MQTTClient_waitForCompletion(_client, token, TIMEOUT);
-    std::cout << "Mensagem entregue com token de entrega " << token << std::endl;
+    //std::cout << "Mensagem entregue com token de entrega " << token << std::endl;
     return 0;
 }
 
