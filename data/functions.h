@@ -10,4 +10,10 @@ bool action_say_hello()
   return true;
 }
 
+bool action_say_night()
+{
+  std::cout << "It's night now, Alice." << std::endl;
+  return true;
+}
+
 #endif /* FUNCTIONS_H_ */
