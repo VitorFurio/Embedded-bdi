@@ -16,4 +16,33 @@ and run the agent:
 ./build/agent.out
 ```
 
+In another terminal, switch to the bob branch:
+```sh
+git switch bob
+```
+and compile and run the agent:
+```sh
+make agent
+./build/agent.out
+```
+
+Bob's output should be:
+```
+Hello, I'm Bob!!
+Message arrived on topic "broadcast": ACHIEVE/hello
+Message arrived on topic "broadcast": ACHIEVE/is_day
+It's night now, Alice.
+Message arrived on topic "broadcast": TELL/its_night
+```
+and Alice's:
+```
+Hey, I'm Alice and I'm running...
+
+Message arrived on topic "broadcast": ACHIEVE/hello
+Hello Bob, I'm Alice!
+Is it day or night now?
+Message arrived on topic "broadcast": ACHIEVE/is_day
+Message arrived on topic "broadcast": TELL/its_night
+Meh, it's night, I'm going to sleep...
+```
 
