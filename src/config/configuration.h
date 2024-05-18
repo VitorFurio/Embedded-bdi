@@ -8,7 +8,7 @@
  * its_day. 
  * its_night.
  * 
- * +!start <- .broadcast(achieve,hello).
+ * +!start <- say_start.
  * 
  * +!hello <- say_hello .broadcast(achieve,is_day).
  * 
@@ -59,12 +59,13 @@ public:
     // Mapping propositions to enable communication between agents.
     list.addItem("its_night", 1, false);
     list.addItem("its_day", 0, false);
-    list.addItem(".broadcast", 4, false);
+    list.addItem("say_start", 4, false);
+    list.addItem(".broadcast", 7, false);
     list.addItem("start", 2, false);
-    list.addItem("say_its_day", 7, false);
+    list.addItem("say_its_day", 8, false);
     list.addItem("is_day", 3, false);
     list.addItem("say_hello", 6, false);
-    list.addItem("say_its_night", 8, false);
+    list.addItem("say_its_night", 9, false);
     list.addItem("hello", 5, false);
     communicator = Communicator(&list);
 
@@ -95,9 +96,7 @@ public:
     body_0 = Body(1);
 
     Proposition prop_0_body_0(4);
-    BodyInstruction inst_0_0(BodyType::INTERNAL_ACTION, prop_0_body_0, communicator.internal_action_broadcast);
-    /* ToBeUncommented: */inst_0_0.add_arg(CENUMFOR_ILF::ACHIEVE);
-    /* ToBeUncommented: */inst_0_0.add_arg(list.searchByName("hello")->prop);
+    BodyInstruction inst_0_0(BodyType::ACTION, prop_0_body_0, action_say_start);
     body_0.add_instruction(inst_0_0);
 
     Plan plan_0(EventOperator::GOAL_ADDITION, prop_0, &context_0, &body_0);
@@ -113,7 +112,7 @@ public:
     BodyInstruction inst_0_1(BodyType::ACTION, prop_1_body_0, action_say_hello);
     body_1.add_instruction(inst_0_1);
 
-    Proposition prop_1_body_1(4);
+    Proposition prop_1_body_1(7);
     BodyInstruction inst_1_1(BodyType::INTERNAL_ACTION, prop_1_body_1, communicator.internal_action_broadcast);
     /* ToBeUncommented: */inst_1_1.add_arg(CENUMFOR_ILF::ACHIEVE);
     /* ToBeUncommented: */inst_1_1.add_arg(list.searchByName("is_day")->prop);
@@ -128,7 +127,7 @@ public:
     context_2 = Context(0);
     body_2 = Body(1);
 
-    Proposition prop_2_body_0(7);
+    Proposition prop_2_body_0(8);
     BodyInstruction inst_0_2(BodyType::ACTION, prop_2_body_0, action_say_its_day);
     body_2.add_instruction(inst_0_2);
 
@@ -141,7 +140,7 @@ public:
     context_3 = Context(0);
     body_3 = Body(1);
 
-    Proposition prop_3_body_0(8);
+    Proposition prop_3_body_0(9);
     BodyInstruction inst_0_3(BodyType::ACTION, prop_3_body_0, action_say_its_night);
     body_3.add_instruction(inst_0_3);
 
