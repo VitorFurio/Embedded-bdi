@@ -5,13 +5,13 @@
  * 
  * !start.
  * its_night.
+ * !is_day. 
  * 
  * +!start <- .broadcast(achieve,hello).
  * 
  * +!hello <- say_hello.
  * 
- * //+!is_day <- .boadcast(tell, its_night).
- * //+happy <- .broadcast(achieve,hello).
+ * +!is_day <- .broadcast(tell,its_night).
  * 
  * 
  */ 
@@ -34,6 +34,8 @@ private:
   Context context_0;
   Body body_1;
   Context context_1;
+  Body body_2;
+  Context context_2;
   BeliefBase belief_base;
   EventBase event_base;
   PlanBase plan_base;
@@ -46,16 +48,17 @@ public:
   {
     belief_base = BeliefBase(1);
     event_base = EventBase(6);
-    plan_base = PlanBase(2);
+    plan_base = PlanBase(3);
     intention_base = IntentionBase(10, 4);
 
 
     // Mapping propositions to enable communication between agents.
     list.addItem("its_night", 0, false);
-    list.addItem(".broadcast", 2, false);
+    list.addItem(".broadcast", 3, false);
     list.addItem("start", 1, false);
-    list.addItem("say_hello", 4, false);
-    list.addItem("hello", 3, false);
+    list.addItem("is_day", 2, false);
+    list.addItem("say_hello", 5, false);
+    list.addItem("hello", 4, false);
     communicator = Communicator(&list);
 
     //--------------------------------------------------------------------------
@@ -70,11 +73,16 @@ public:
 
     //--------------------------------------------------------------------------
 
+    Event event_2(EventOperator::GOAL_ADDITION, 2);
+    event_base.add_event(event_2);
+
+    //--------------------------------------------------------------------------
+
     Proposition prop_0(1);
     context_0 = Context(0);
     body_0 = Body(1);
 
-    Proposition prop_0_body_0(2);
+    Proposition prop_0_body_0(3);
     BodyInstruction inst_0_0(BodyType::INTERNAL_ACTION, prop_0_body_0, communicator.internal_action_broadcast);
     /* ToBeUncommented: */inst_0_0.add_arg(CENUMFOR_ILF::ACHIEVE);
     /* ToBeUncommented: */inst_0_0.add_arg(list.searchByName("hello")->prop);
@@ -85,16 +93,31 @@ public:
 
     //--------------------------------------------------------------------------
 
-    Proposition prop_1(3);
+    Proposition prop_1(4);
     context_1 = Context(0);
     body_1 = Body(1);
 
-    Proposition prop_1_body_0(4);
+    Proposition prop_1_body_0(5);
     BodyInstruction inst_0_1(BodyType::ACTION, prop_1_body_0, action_say_hello);
     body_1.add_instruction(inst_0_1);
 
     Plan plan_1(EventOperator::GOAL_ADDITION, prop_1, &context_1, &body_1);
     plan_base.add_plan(plan_1);
+
+    //--------------------------------------------------------------------------
+
+    Proposition prop_2(2);
+    context_2 = Context(0);
+    body_2 = Body(1);
+
+    Proposition prop_2_body_0(3);
+    BodyInstruction inst_0_2(BodyType::INTERNAL_ACTION, prop_2_body_0, communicator.internal_action_broadcast);
+    /* ToBeUncommented: */inst_0_2.add_arg(CENUMFOR_ILF::TELL);
+    /* ToBeUncommented: */inst_0_2.add_arg(list.searchByName("its_night")->prop);
+    body_2.add_instruction(inst_0_2);
+
+    Plan plan_2(EventOperator::GOAL_ADDITION, prop_2, &context_2, &body_2);
+    plan_base.add_plan(plan_2);
   }
 
   BeliefBase * get_belief_base()

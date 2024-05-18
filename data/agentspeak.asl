@@ -8,7 +8,6 @@ its_night.
 
 +!hello <- say_hello.
 
-+!is_day <- .boadcast(tell, its_night).
-//+happy <- .broadcast(achieve,hello).
++!is_day <- .broadcast(tell,its_night).
 
 
