@@ -10,12 +10,15 @@ bool action_say_hello()
   return true;
 }
 
-
-bool update_hello()
+bool action_say_its_day()
 {
-  std::cout << "Hello world!" << std::endl;
-  std::cout << "I am an agent and I will keep running until " <<
-               "I am terminated" << std::endl;
+  std::cout << "Ohh, it's day, I'm going for a walk in the park!!" << std::endl;
+  return true;
+}
+
+bool action_say_its_night()
+{
+  std::cout << "Ohh, it's night, I'm going to sleep..." << std::endl;
   return true;
 }
 

@@ -1,12 +1,15 @@
 // Agent Alice.
 
 !start.
-is_day. //agents only send beliefs and goals that they themselves have. 
+!is_day. //Ask Bob if it's day
+its_day. 
+its_night.
 
 +!start <- .broadcast(achieve,hello).
 
 +!hello <- say_hello .broadcast(achieve,is_day).
 
-//+happy <- .broadcast(achieve,hello).
++its_day <- say_its_day.
++its_night <- say_its_night.
 
 

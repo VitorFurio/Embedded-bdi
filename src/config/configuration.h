@@ -4,7 +4,7 @@
  * // Agent Alice.
  * 
  * !start.
- * is_day. //agents only send beliefs and goals that they themselves have. 
+ * !is_day. //agents only send beliefs and goals that they themselves have. 
  * 
  * +!start <- .broadcast(achieve,hello).
  * 
@@ -43,7 +43,7 @@ private:
 public:
   AgentSettings()
   {
-    belief_base = BeliefBase(1);
+    belief_base = BeliefBase(0);
     event_base = EventBase(6);
     plan_base = PlanBase(2);
     intention_base = IntentionBase(10, 4);
@@ -51,16 +51,16 @@ public:
 
     // Mapping propositions to enable communication between agents.
     list.addItem(".broadcast", 2, false);
-    list.addItem("start", 1, false);
-    list.addItem("is_day", 0, false);
+    list.addItem("start", 0, false);
+    list.addItem("is_day", 1, false);
     list.addItem("say_hello", 4, false);
     list.addItem("hello", 3, false);
     communicator = Communicator(&list);
 
     //--------------------------------------------------------------------------
 
-    Belief belief_is_day(0, nullptr, true);
-    belief_base.add_belief(belief_is_day);
+    Event event_0(EventOperator::GOAL_ADDITION, 0);
+    event_base.add_event(event_0);
 
     //--------------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ public:
 
     //--------------------------------------------------------------------------
 
-    Proposition prop_0(1);
+    Proposition prop_0(0);
     context_0 = Context(0);
     body_0 = Body(1);
 
