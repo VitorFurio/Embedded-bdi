@@ -1,8 +1,6 @@
 # Eclipse IDE workspace folder
 /.metadata/
 
-src/config/configuration.h
-
 # Eclipse IDE generated folders for each project
 lib/Debug
 lib/.settings
