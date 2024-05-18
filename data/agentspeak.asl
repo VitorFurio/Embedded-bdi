@@ -5,7 +5,7 @@
 its_day. 
 its_night.
 
-+!start <- .broadcast(achieve,hello).
++!start <- say_start.
 
 +!hello <- say_hello .broadcast(achieve,is_day).
 
