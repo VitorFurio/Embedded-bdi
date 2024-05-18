@@ -2,7 +2,7 @@
 
 !start.
 its_night.
-!is_day; -!is_day.
+!is_day. 
 
 +!start <- .broadcast(achieve,hello).
 
