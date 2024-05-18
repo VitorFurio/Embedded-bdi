@@ -4,7 +4,7 @@ Embedded-BDI allows programming deliberative [BDI](https://en.wikipedia.org/wiki
 
 Visit the [project page](https://embedded-bdi.github.io) for more information.
 
-for an example of communication between agents go to the 'bob' and 'alice' branches
+For an example of communication between agents go to the 'bob' and 'alice' branches
 
 ---
 
