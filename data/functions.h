@@ -6,7 +6,7 @@
 
 bool action_say_start()
 {
-  std::cout << "Hey, I'm Alice and I'm running..." << std::endl;
+  std::cout << "Hey, I'm Alice and I'm running..." << std::endl << std::endl;
   return true;
 }
 
@@ -20,7 +20,7 @@ bool action_say_hello()
 
 bool action_say_its_day()
 {
-  std::cout << "Ohh, it's day, I'm going for a walk in the park!" << std::endl;
+  std::cout << "Ohh, it's day, I'm going for a walk in the park!" << std::endl << std::endl;
   return true;
 }
 
