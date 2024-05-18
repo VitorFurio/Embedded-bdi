@@ -1,7 +1,10 @@
+// Agent Bob.
+
 !start.
++!start <- .broadcast(achieve,hello).
 
-+!start <- +happy.
++!hello <- say_hello.
 
-+happy <- .broadcast(achieve,hello).
+//+happy <- .broadcast(achieve,hello).
 
-+!hello <- say_hello; .broadcast(tell,happy).
+

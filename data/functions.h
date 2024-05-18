@@ -6,9 +6,7 @@
 
 bool action_say_hello()
 {
-  std::cout << "Hello world!" << std::endl;
-  std::cout << "I am an agent and I will keep running until " <<
-               "I am terminated" << std::endl;
+  std::cout << "Hello, I'm Bob!!" << std::endl;
   return true;
 }
 
