@@ -1,11 +1,19 @@
-![](https://github.com/Embedded-BDI/embedded-bdi/actions/workflows/unit-tests.yml/badge.svg) ![](https://github.com/Embedded-BDI/embedded-bdi/actions/workflows/gh-pages.yml/badge.svg)
+This is an example of communication between embedded bdi agents using the MQTT protocol and the .broadcast internal action.
+This example consists of a conversation between Agent Bob and Agent Alice.
 
-Embedded-BDI allows programming deliberative [BDI](https://en.wikipedia.org/wiki/Belief%E2%80%93desire%E2%80%93intention_software_model) agents for embedded systems using [AgentSpeak](https://en.wikipedia.org/wiki/AgentSpeak)-like syntax.
+Before running this example install the MQTT library Paho, necessary for communication: [https://github.com/eclipse/paho.mqtt.cpp].
 
-Visit the [project page](https://embedded-bdi.github.io) for more information.
+Switch to the alice branch:
+```sh
+git switch alice
+```
+Compile Agent alice:
+```sh
+make agent
+```
+and run the agent:
+```sh
+./build/agent.out
+```
 
----
 
-Version history
-
-* v1.0.0 - [Matuzalem Muller dos Santos](https://matuzalemmuller.com)
