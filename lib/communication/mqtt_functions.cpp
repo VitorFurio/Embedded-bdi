@@ -5,7 +5,7 @@ MQTTClient MQTTFunctions::_client = nullptr;
 
 void MQTTFunctions::initializeClient() {
     setup_mqtt_client(&_client);
-    subscribe_topic("bob");
+    subscribe_topic("alice");
     subscribe_topic("broadcast");
     std::cout << "MQTT client successfully configured." << std::endl << std::endl;
 }

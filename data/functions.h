@@ -6,7 +6,7 @@
 
 bool action_say_hello()
 {
-  std::cout << "Hello, I'm Bob!!" << std::endl;
+  std::cout << "Hello, I'm Alice!!" << std::endl;
   return true;
 }
 

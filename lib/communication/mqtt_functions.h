@@ -7,7 +7,7 @@
 #include <iostream>
 
 #define ADDRESS     "mqtt://mqtt.eclipseprojects.io"
-#define CLIENTID    "bob"
+#define CLIENTID    "alice"
 #define QOS         1
 #define TIMEOUT     10000L
 

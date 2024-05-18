@@ -1,12 +1,9 @@
 /*
  * AgentSpeak code:
  *
- * // Agent Bob.
- * 
- * !start.
- * +!start <- .broadcast(achieve,hello).
- * 
- * +!hello <- say_hello.
+ * // Agent Alice.
+ * !hello.
+ * +!hello <- say_hello.//; .broadcast(achie,is_day).
  * 
  * //+happy <- .broadcast(achieve,hello).
  * 
@@ -29,8 +26,6 @@ class AgentSettings
 private:
   Body body_0;
   Context context_0;
-  Body body_1;
-  Context context_1;
   BeliefBase belief_base;
   EventBase event_base;
   PlanBase plan_base;
@@ -43,15 +38,13 @@ public:
   {
     belief_base = BeliefBase(0);
     event_base = EventBase(6);
-    plan_base = PlanBase(2);
+    plan_base = PlanBase(1);
     intention_base = IntentionBase(10, 4);
 
 
     // Mapping propositions to enable communication between agents.
-    list.addItem(".broadcast", 1, false);
-    list.addItem("start", 0, false);
-    list.addItem("say_hello", 3, false);
-    list.addItem("hello", 2, false);
+    list.addItem("say_hello", 1, false);
+    list.addItem("hello", 0, false);
     communicator = Communicator(&list);
 
     //--------------------------------------------------------------------------
@@ -66,26 +59,11 @@ public:
     body_0 = Body(1);
 
     Proposition prop_0_body_0(1);
-    BodyInstruction inst_0_0(BodyType::INTERNAL_ACTION, prop_0_body_0, communicator.internal_action_broadcast);
-    /* ToBeUncommented: */inst_0_0.add_arg(CENUMFOR_ILF::ACHIEVE);
-    /* ToBeUncommented: */inst_0_0.add_arg(list.searchByName("hello")->prop);
+    BodyInstruction inst_0_0(BodyType::ACTION, prop_0_body_0, action_say_hello);
     body_0.add_instruction(inst_0_0);
 
     Plan plan_0(EventOperator::GOAL_ADDITION, prop_0, &context_0, &body_0);
     plan_base.add_plan(plan_0);
-
-    //--------------------------------------------------------------------------
-
-    Proposition prop_1(2);
-    context_1 = Context(0);
-    body_1 = Body(1);
-
-    Proposition prop_1_body_0(3);
-    BodyInstruction inst_0_1(BodyType::ACTION, prop_1_body_0, action_say_hello);
-    body_1.add_instruction(inst_0_1);
-
-    Plan plan_1(EventOperator::GOAL_ADDITION, prop_1, &context_1, &body_1);
-    plan_base.add_plan(plan_1);
   }
 
   BeliefBase * get_belief_base()
