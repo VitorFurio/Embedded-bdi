@@ -24,6 +24,7 @@
 class BodyInstruction
 {
 private:
+  //std::string _arg; 
   /// Function to act in the environment
   bool (*_take_action)();
   Proposition _proposition;
@@ -34,10 +35,12 @@ private:
   // For internal actions:
   CENUMFOR_ILF _ilf;
   //Belief _belief;
+
+  std::string _arg;
   
   //bool *_belief;
-  char _arg[4] = "ola";
-  // std::string _arg; 
+  char _arg2[5] = "ola1";
+  
   //bool (*_take_internal_action)();
 
 public:

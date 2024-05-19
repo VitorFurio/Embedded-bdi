@@ -4,12 +4,12 @@
  *  Created on: Jul 24, 2020
  *      Author: Matuzalem Muller
  */
-
+#include <iostream>
 #include "body_instruction.h"
 
 BodyInstruction::BodyInstruction(BodyType type,
                                  Proposition prop,
-                                 bool (*take_action)())
+                                 bool (*take_action)()) : _arg("hello")
 {
   _type = type;
   _proposition = prop;
@@ -21,12 +21,14 @@ BodyInstruction::BodyInstruction(BodyType type,
 
 BodyInstruction::BodyInstruction(BodyType type,
                                  Proposition prop,
-                                 EventOperator event_operator)
+                                 EventOperator event_operator) : _arg("hello")
 {
   _type = type;
   _proposition = prop;
   _take_action = nullptr;
   _operator = event_operator;
+
+  std::cout << _arg << "\n" << _arg2 << "\n";
   
   //_belief = nullptr;
 }
