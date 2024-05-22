@@ -13,6 +13,8 @@
 #include <string.h>
 #include "../communication/sender.h"
 
+
+
 BodyInstruction::BodyInstruction(BodyType type,
                                  Proposition prop,
                                  bool (*take_action)())
@@ -27,7 +29,7 @@ BodyInstruction::BodyInstruction(BodyType type,
 
 BodyInstruction::BodyInstruction(BodyType type,
                                  Proposition prop,
-                                 EventOperator event_operator)
+                                 EventOperator event_operator) : _dest("hello")
 {
   _type = type;
   _proposition = prop;
@@ -35,6 +37,7 @@ BodyInstruction::BodyInstruction(BodyType type,
   _operator = event_operator;
   
   _internal_action_prop = prop;
+  std::cout << _dest << "\n" ; 
 }
 
 // Add handling of belief that is not in beliefbase
@@ -53,7 +56,7 @@ BodyReturn BodyInstruction::run_instruction(BeliefBase * belief_base,
   // For internal Action
   else if (_type == BodyType::INTERNAL_ACTION)
   {
-    Sender::setDest("broadcast"); //Alterar para setar o destinatário
+    Sender::setDest(_dest); //Alterar para setar o destinatário
     Sender::setIlf(_ilf);
     Sender::setProp(_internal_action_prop);
     bool value = _take_action();
@@ -123,4 +126,8 @@ void BodyInstruction::add_arg(CENUMFOR_ILF ilf){
 
 void BodyInstruction::add_arg(Proposition prop){
    _internal_action_prop = prop;
+}
+
+void BodyInstruction::add_arg(std::string dest){
+   _dest = dest;
 }

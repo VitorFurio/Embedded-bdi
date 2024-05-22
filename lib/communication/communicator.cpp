@@ -101,7 +101,7 @@ int Communicator::messageArrived(const std::string& msg) {
     return 1;
 }
 
-int Communicator::publish_message(const char* topic, const std::string& message) {
+int Communicator::publish_message(std::string& topic, std::string& message) {
     return MQTTFunctions::publish_message(topic, message);
 }
 
@@ -115,8 +115,26 @@ bool Communicator::internal_action_broadcast() {
         std::cerr << "Error: No item found for the provided proposition." << std::endl;
         return false;
     }
-    const char* topic = "broadcast"; 
+    std::string topic = "broadcast"; 
     std::string message = IlfToString(Sender::getIlf()) + "/" + item->name;
     publish_message(topic, message);
+    return true;
+}
+
+bool Communicator::internal_action_send() {
+    if (!_list) {
+        std::cerr << "Error: MsgList not initialized." << std::endl;
+        return false;
+    }
+    auto item = _list->searchByProposition(Sender::getProp());
+    if (!item) {
+        std::cerr << "Error: No item found for the provided proposition." << std::endl;
+        return false;
+    }
+    std::string topic = Sender::getDest();  
+    std::string message = IlfToString(Sender::getIlf()) + "/" + item->name;
+    MQTTFunctions::subscribe_topic(topic);
+    publish_message(topic, message);
+    MQTTFunctions::unsubscribe_topic(topic);
     return true;
 }

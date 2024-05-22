@@ -2,6 +2,6 @@
 
 +!start <- +happy.
 
-+happy <- .broadcast(achieve,hello).
++happy <- .send(bob,achieve,hello).
 
 +!hello <- say_hello; .broadcast(tell,happy).

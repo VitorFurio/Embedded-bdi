@@ -6,6 +6,7 @@ MQTTClient MQTTFunctions::_client = nullptr;
 void MQTTFunctions::initializeClient() {
     setup_mqtt_client(&_client);
     subscribe_topic("broadcast");
+    subscribe_topic("hello");
     std::cout << "MQTT client successfully configured." << std::endl << std::endl;
 }
 
@@ -38,11 +39,22 @@ int MQTTFunctions::subscribe_topic(const std::string& topic) {
     return 0;
 }
 
-int MQTTFunctions::publish_message(const std::string& topic, const std::string& message) {
+int MQTTFunctions::unsubscribe_topic(const std::string& topic) {
+    int rc = MQTTClient_unsubscribe(_client, topic.c_str());
+    if (rc != MQTTCLIENT_SUCCESS) {
+        std::cerr << "Failed to unsubscribe from topic \"" << topic << "\", return code " << rc << std::endl;
+        return -1;
+    }
+    std::cout << "Unsubscribed from the topic \"" << topic << "\"" << std::endl;
+    return 0;
+}
+
+int MQTTFunctions::publish_message(std::string& topic, std::string& message) {
     if (!_client || !MQTTClient_isConnected(_client)) {
         std::cerr << "MQTT client not initialized or disconnected." << std::endl;
         return -1;
     }
+   // subscribe_topic(topic);
     MQTTClient_message pubmsg = MQTTClient_message_initializer;
     pubmsg.payload = (void*)message.c_str();
     pubmsg.payloadlen = message.length();
@@ -55,7 +67,8 @@ int MQTTFunctions::publish_message(const std::string& topic, const std::string& 
         return -1;
     }
     MQTTClient_waitForCompletion(_client, token, TIMEOUT);
-    //std::cout << "Message delivered with delivery token " << token << std::endl;
+   // std::cout << "Message delivered with delivery token " << token << std::endl;
+   // unsubscribe_topic(topic);
     return 0;
 }
 

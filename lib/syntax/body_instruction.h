@@ -17,6 +17,8 @@
 #include <string>
 #include <cstdint>
 
+#include <iostream>
+
 /**
  * Body instructions can be belief operations, goal operations (adopt/drop
  * intention) or action in the environment.
@@ -34,6 +36,7 @@ private:
   // For internal actions:
   Proposition _internal_action_prop;
   CENUMFOR_ILF _ilf;
+  std::string _dest;
 
 public:
   /**
@@ -71,6 +74,7 @@ public:
   // For internal actions:
   void add_arg(CENUMFOR_ILF ilf);
   void add_arg(Proposition prop);
+  void add_arg(std::string dest);
   
 };
 

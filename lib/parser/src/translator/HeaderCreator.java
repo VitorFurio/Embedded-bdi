@@ -303,10 +303,18 @@ public class HeaderCreator
                argument = "communicator.internal_action_broadcast";
                // JH: for .broadcast
                // TODO: remove comments when C side is ready for call .add_arg
+               arg_terms += "    /* ToBeUncommented: */" + inst_id + ".add_arg(\"broadcast\");\n";
                arg_terms += "    /* ToBeUncommented: */" + inst_id + ".add_arg(CENUMFOR_ILF::"+ body.getArgs().get(0).toUpperCase()+");\n";
                arg_terms += "    /* ToBeUncommented: */" + inst_id + ".add_arg(list.searchByName(\""+ body.getArgs().get(1)+"\")->prop);\n";
-
-             } else {
+             }
+             else if (body.getProposition().equals(".send")) {
+               argument = "communicator.internal_action_send";
+               // TODO: remove comments when C side is ready for call .add_arg
+               arg_terms += "    /* ToBeUncommented: */" + inst_id + ".add_arg(\""+ body.getArgs().get(0)+"\");\n";
+               arg_terms += "    /* ToBeUncommented: */" + inst_id + ".add_arg(CENUMFOR_ILF::"+ body.getArgs().get(1).toUpperCase()+");\n";
+               arg_terms += "    /* ToBeUncommented: */" + inst_id + ".add_arg(list.searchByName(\""+ body.getArgs().get(2)+"\")->prop);\n";
+             }
+              else {
                System.out.println("*** translation not implemented for "+body.getProposition());
              }
           } else if (body.getOperator() == null) {

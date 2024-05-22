@@ -21,9 +21,10 @@ public:
 
     // Subscribe to a given topic.
     static int subscribe_topic(const std::string& topic);
+    static int unsubscribe_topic(const std::string& topic);
 
     // Publish a message to a specific topic.
-    static int publish_message(const std::string& topic, const std::string& message);
+    static int publish_message(std::string& topic, std::string& message);
 
     // Callback function to handle messages that arrive at subscribed topics.
     static int messageArrived(void* context, char* topicName, int topicLen, MQTTClient_message* message);

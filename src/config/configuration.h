@@ -5,7 +5,7 @@
  * 
  * +!start <- +happy.
  * 
- * +happy <- .broadcast(achieve,hello).
+ * +happy <- .send(bob,achieve,hello).
  * 
  * +!hello <- say_hello; .broadcast(tell,happy).
  */ 
@@ -48,8 +48,9 @@ public:
 
     // Mapping propositions to enable communication between agents.
     list.addItem("happy", 0, false);
-    list.addItem(".broadcast", 2, false);
+    list.addItem(".broadcast", 5, false);
     list.addItem("start", 1, false);
+    list.addItem(".send", 2, false);
     list.addItem("say_hello", 4, false);
     list.addItem("hello", 3, false);
     communicator = Communicator(&list);
@@ -84,7 +85,8 @@ public:
     body_1 = Body(1);
 
     Proposition prop_1_body_0(2);
-    BodyInstruction inst_0_1(BodyType::INTERNAL_ACTION, prop_1_body_0, communicator.internal_action_broadcast);
+    BodyInstruction inst_0_1(BodyType::INTERNAL_ACTION, prop_1_body_0, communicator.internal_action_send);
+    /* ToBeUncommented: */inst_0_1.add_arg("bob");
     /* ToBeUncommented: */inst_0_1.add_arg(CENUMFOR_ILF::ACHIEVE);
     /* ToBeUncommented: */inst_0_1.add_arg(list.searchByName("hello")->prop);
     body_1.add_instruction(inst_0_1);
@@ -102,8 +104,9 @@ public:
     BodyInstruction inst_0_2(BodyType::ACTION, prop_2_body_0, action_say_hello);
     body_2.add_instruction(inst_0_2);
 
-    Proposition prop_2_body_1(2);
+    Proposition prop_2_body_1(5);
     BodyInstruction inst_1_2(BodyType::INTERNAL_ACTION, prop_2_body_1, communicator.internal_action_broadcast);
+    /* ToBeUncommented: */inst_1_2.add_arg("broadcast");
     /* ToBeUncommented: */inst_1_2.add_arg(CENUMFOR_ILF::TELL);
     /* ToBeUncommented: */inst_1_2.add_arg(list.searchByName("happy")->prop);
     body_2.add_instruction(inst_1_2);

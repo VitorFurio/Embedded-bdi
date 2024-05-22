@@ -23,7 +23,7 @@ VALGRIND_EXEC ?= valgrind.out
 DOCS_DIR ?= ./docs
 BUILD_DIR ?= ./build
 
-CFLAGS=-lpaho-mqtt3c
+CFLAGS=-lpaho-mqtt3c 
 
 ############################### Agent variables ################################
 AGENT_DIRS ?= ./lib ./data ./src
