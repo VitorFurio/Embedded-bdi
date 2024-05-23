@@ -14,10 +14,10 @@
 class MQTTFunctions {
 public:
     // Initializes the MQTT client and connects to the broker.
-    static void initializeClient();
+    static void initializeClient(std::string& clientId);
 
     // Setup the MQTT client with the necessary callbacks and configurations.
-    static int setup_mqtt_client(MQTTClient* client);
+    static int setup_mqtt_client(MQTTClient* client, std::string& clientId);
 
     // Subscribe to a given topic.
     static int subscribe_topic(const std::string& topic);

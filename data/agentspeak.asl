@@ -1,6 +1,6 @@
 !start.
 
-+!start <- +happy.
++!start <-.my_name("Alice"); +happy.
 
 +happy <- .send(bob,achieve,hello).
 

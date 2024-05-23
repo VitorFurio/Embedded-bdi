@@ -3,7 +3,7 @@
  *
  * !start.
  * 
- * +!start <- +happy.
+ * +!start <-.my_name("Alice"); +happy.
  * 
  * +happy <- .send(bob,achieve,hello).
  * 
@@ -47,12 +47,13 @@ public:
 
 
     // Mapping propositions to enable communication between agents.
+    list.addItem(".my_name", 2, false);
     list.addItem("happy", 0, false);
-    list.addItem(".broadcast", 5, false);
+    list.addItem(".broadcast", 6, false);
     list.addItem("start", 1, false);
-    list.addItem(".send", 2, false);
-    list.addItem("say_hello", 4, false);
-    list.addItem("hello", 3, false);
+    list.addItem(".send", 3, false);
+    list.addItem("say_hello", 5, false);
+    list.addItem("hello", 4, false);
     communicator = Communicator(&list);
 
     //--------------------------------------------------------------------------
@@ -69,11 +70,16 @@ public:
 
     Proposition prop_0(1);
     context_0 = Context(0);
-    body_0 = Body(1);
+    body_0 = Body(2);
 
-    Proposition prop_0_body_0(0);
-    BodyInstruction inst_0_0(BodyType::BELIEF, prop_0_body_0, EventOperator::BELIEF_ADDITION);
+    Proposition prop_0_body_0(2);
+    BodyInstruction inst_0_0(BodyType::INTERNAL_ACTION, prop_0_body_0, communicator.internal_action_my_name);
+    communicator.setName("Alice");
     body_0.add_instruction(inst_0_0);
+
+    Proposition prop_0_body_1(0);
+    BodyInstruction inst_1_0(BodyType::BELIEF, prop_0_body_1, EventOperator::BELIEF_ADDITION);
+    body_0.add_instruction(inst_1_0);
 
     Plan plan_0(EventOperator::GOAL_ADDITION, prop_0, &context_0, &body_0);
     plan_base.add_plan(plan_0);
@@ -84,11 +90,11 @@ public:
     context_1 = Context(0);
     body_1 = Body(1);
 
-    Proposition prop_1_body_0(2);
+    Proposition prop_1_body_0(3);
     BodyInstruction inst_0_1(BodyType::INTERNAL_ACTION, prop_1_body_0, communicator.internal_action_send);
-    /* ToBeUncommented: */inst_0_1.add_arg("bob");
-    /* ToBeUncommented: */inst_0_1.add_arg(CENUMFOR_ILF::ACHIEVE);
-    /* ToBeUncommented: */inst_0_1.add_arg(list.searchByName("hello")->prop);
+    inst_0_1.add_arg("bob");
+    inst_0_1.add_arg(CENUMFOR_ILF::ACHIEVE);
+    inst_0_1.add_arg(list.searchByName("hello")->prop);
     body_1.add_instruction(inst_0_1);
 
     Plan plan_1(EventOperator::BELIEF_ADDITION, prop_1, &context_1, &body_1);
@@ -96,19 +102,19 @@ public:
 
     //--------------------------------------------------------------------------
 
-    Proposition prop_2(3);
+    Proposition prop_2(4);
     context_2 = Context(0);
     body_2 = Body(2);
 
-    Proposition prop_2_body_0(4);
+    Proposition prop_2_body_0(5);
     BodyInstruction inst_0_2(BodyType::ACTION, prop_2_body_0, action_say_hello);
     body_2.add_instruction(inst_0_2);
 
-    Proposition prop_2_body_1(5);
+    Proposition prop_2_body_1(6);
     BodyInstruction inst_1_2(BodyType::INTERNAL_ACTION, prop_2_body_1, communicator.internal_action_broadcast);
-    /* ToBeUncommented: */inst_1_2.add_arg("broadcast");
-    /* ToBeUncommented: */inst_1_2.add_arg(CENUMFOR_ILF::TELL);
-    /* ToBeUncommented: */inst_1_2.add_arg(list.searchByName("happy")->prop);
+    inst_1_2.add_arg("broadcast");
+    inst_1_2.add_arg(CENUMFOR_ILF::TELL);
+    inst_1_2.add_arg(list.searchByName("happy")->prop);
     body_2.add_instruction(inst_1_2);
 
     Plan plan_2(EventOperator::GOAL_ADDITION, prop_2, &context_2, &body_2);

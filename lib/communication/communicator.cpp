@@ -4,8 +4,9 @@
 #include <string>
 
 MsgList* Communicator::_list = nullptr;
+std::string Communicator::_name = "None"; 
 
-Communicator::Communicator() {}
+Communicator::Communicator(){}
 Communicator::Communicator(MsgList* list) : Communicator() {
     if (list) {
         _list = list;
@@ -16,7 +17,7 @@ Communicator::Communicator(MsgList* list) : Communicator() {
 Communicator::~Communicator() {}
 
 void Communicator::initializeClient() {
-    MQTTFunctions::initializeClient();
+    MQTTFunctions::initializeClient(_name);
 }
 
 // Auxiliary functions
@@ -136,5 +137,14 @@ bool Communicator::internal_action_send() {
     MQTTFunctions::subscribe_topic(topic);
     publish_message(topic, message);
     MQTTFunctions::unsubscribe_topic(topic);
+    return true;
+}
+
+void Communicator::setName(const std::string name) {
+    _name = name;
+}
+
+bool Communicator::internal_action_my_name() {
+     std::cerr << "Nome do agente: " << _name << std::endl;
     return true;
 }

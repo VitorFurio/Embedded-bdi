@@ -3,18 +3,18 @@
 
 MQTTClient MQTTFunctions::_client = nullptr;
 
-void MQTTFunctions::initializeClient() {
-    setup_mqtt_client(&_client);
+void MQTTFunctions::initializeClient(std::string& clientId) {
+    setup_mqtt_client(&_client, clientId);
     subscribe_topic("broadcast");
-    subscribe_topic("hello");
+    subscribe_topic(clientId);
     std::cout << "MQTT client successfully configured." << std::endl << std::endl;
 }
 
-int MQTTFunctions::setup_mqtt_client(MQTTClient* client) {
+int MQTTFunctions::setup_mqtt_client(MQTTClient* client, std::string& clientId) {
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
-    MQTTClient_create(client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    MQTTClient_create(client, ADDRESS, clientId.c_str(), MQTTCLIENT_PERSISTENCE_NONE, NULL);
     int rc = MQTTClient_setCallbacks(*client, NULL, NULL, messageArrived, NULL);
     if (rc != MQTTCLIENT_SUCCESS) {
         std::cerr << "Failed to set callbacks, return code " << rc << std::endl;

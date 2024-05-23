@@ -2,7 +2,7 @@
 
 // Inicialização dos membros estáticos
 Proposition Sender::_prop = Proposition(0);  // Inicializado com o valor padrão usando o construtor de Proposition
-std::string Sender::_dest = "InitialDest";
+std::string Sender::_dest = "None";
 CENUMFOR_ILF Sender::_ilf = CENUMFOR_ILF::TELL;
 
 void Sender::setProp(Proposition prop) {

@@ -19,6 +19,7 @@ class Communicator {
 private:
     static MsgList* _list;
     static MQTTClient _client;
+    static std::string _name;
      
 public:
     Communicator();
@@ -29,6 +30,8 @@ public:
     static int messageArrived(const std::string& msg);
     static bool internal_action_broadcast();
     static bool internal_action_send();
+    static bool internal_action_my_name();
+    static void setName(const std::string name); 
     ~Communicator();
 };
 
