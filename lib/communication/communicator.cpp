@@ -1,7 +1,4 @@
-#include "communicator.h"
-#include <iostream>
-#include <sstream>
-#include <string>
+ #include "communicator.h"
 
 MsgList* Communicator::_list = nullptr;
 std::string Communicator::_name = "None"; 
@@ -11,12 +8,13 @@ Communicator::Communicator(MsgList* list) : Communicator() {
     if (list) {
         _list = list;
     } else {
-        std::cerr << "Error: Null pointer provided for MsgList." << std::endl;
+        printf("Error: Null pointer provided for MsgList.\n");
     }
 }
 Communicator::~Communicator() {}
 
 void Communicator::initializeClient() {
+    printf("Inicializando communicator...\n");
     MQTTFunctions::initializeClient(_name);
 }
 
@@ -47,7 +45,7 @@ std::pair<bool, CENUMFOR_ILF> stringToILF(const std::string& str) {
 
 void Communicator::update(BeliefBase* belief_base, EventBase* event_base) {
     if (!_list || !belief_base || !event_base) {
-        std::cerr << "Error: Null pointer provided to update method." << std::endl;
+        printf("Error: Null pointer provided to update method.\n");
         return;
     }
     for (Item_list* current = _list->getHead(); current != nullptr; current = current->next) {
@@ -71,7 +69,7 @@ void Communicator::update(BeliefBase* belief_base, EventBase* event_base) {
                     event = Event(EventOperator::GOAL_DELETION, prop);
                     break;
                 default:
-                    std::cerr << "Error: Unknown ILF received. Name: " << current->name << std::endl;
+                    printf("Error: Unknown ILF received. Name: %s\n", current->name.c_str());
                     continue;
                 }
                 event_base->add_event(event);
@@ -91,13 +89,13 @@ int Communicator::messageArrived(const std::string& msg) {
                 item->status = true;
                 item->ilf = result.second;
             } else {
-                std::cerr << "Error: Proposition <" << msg_prop << "> does not exist in the agent's base." << std::endl;
+                printf("Error: Proposition <%s> does not exist in the agent's base.\n", msg_prop.c_str());
             }
         } else {
-            std::cerr << "Error: ILF <" << msg_ilf << "> is not valid." << std::endl;
+            printf("Error: ILF <%s> is not valid.\n", msg_ilf.c_str());
         }
     } else {
-        std::cerr << "Error: Invalid message format. Expected 'ILF/prop'." << std::endl;
+        printf("Error: Invalid message format. Expected 'ILF/prop'.\n");
     }
     return 1;
 }
@@ -108,12 +106,12 @@ int Communicator::publish_message(std::string& topic, std::string& message) {
 
 bool Communicator::internal_action_broadcast() {
     if (!_list) {
-        std::cerr << "Error: MsgList not initialized." << std::endl;
+        printf("Error: MsgList not initialized.\n");
         return false;
     }
     auto item = _list->searchByProposition(Sender::getProp());
     if (!item) {
-        std::cerr << "Error: No item found for the provided proposition." << std::endl;
+        printf("Error: No item found for the provided proposition.\n");
         return false;
     }
     std::string topic = "broadcast"; 
@@ -124,19 +122,19 @@ bool Communicator::internal_action_broadcast() {
 
 bool Communicator::internal_action_send() {
     if (!_list) {
-        std::cerr << "Error: MsgList not initialized." << std::endl;
+        printf("Error: MsgList not initialized.\n");
         return false;
     }
     auto item = _list->searchByProposition(Sender::getProp());
     if (!item) {
-        std::cerr << "Error: No item found for the provided proposition." << std::endl;
+        printf("Error: No item found for the provided proposition.\n");
         return false;
     }
     std::string topic = Sender::getDest();  
     std::string message = IlfToString(Sender::getIlf()) + "/" + item->name;
-    MQTTFunctions::subscribe_topic(topic);
+    //MQTTFunctions::subscribe_topic(topic);
     publish_message(topic, message);
-    MQTTFunctions::unsubscribe_topic(topic);
+  //  MQTTFunctions::unsubscribe_topic(topic);
     return true;
 }
 
@@ -145,6 +143,7 @@ void Communicator::setName(const std::string name) {
 }
 
 bool Communicator::internal_action_my_name() {
-     std::cerr << "Nome do agente: " << _name << std::endl;
+    printf("Nome do agente: %s\n", _name.c_str());
     return true;
 }
+

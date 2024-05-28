@@ -222,6 +222,8 @@ public class HeaderCreator
           text = "    list.addItem(\"" + key + "\", "+ value + ", false);\n";
           out.append(text);
       }
+      text = "    list.print();\n";
+      out.append(text);
       
       // Creation of Communicator
       text = "    communicator = Communicator(&list);\n";

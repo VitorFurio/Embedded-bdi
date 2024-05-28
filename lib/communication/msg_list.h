@@ -1,7 +1,6 @@
 #ifndef MSG_LIST_H
 #define MSG_LIST_H
 
-#include <iostream>
 #include <string>
 #include "../syntax/cenumfor_ilf.h"
 #include "../syntax/proposition.h"
@@ -10,12 +9,12 @@
 struct Item_list {
     std::string name; // Nome da propriedade
     Proposition prop; // Objeto Proposition substituindo 'number'
-    bool status; // true se recebeu uma mensagem
+    int status; // true se recebeu uma mensagem
     CENUMFOR_ILF ilf;
     Item_list* next;
 
     // Construtor para inicializar os membros
-    Item_list(const std::string& itemName, Proposition itemProp, bool itemStatus, CENUMFOR_ILF ilf);
+    Item_list(const std::string& itemName, Proposition itemProp, int itemStatus, CENUMFOR_ILF ilf);
 };
 
 class MsgList {
@@ -31,20 +30,20 @@ public:
     ~MsgList();
 
     // Função para inserir um novo item na lista
-    void addItem(const std::string& name, uint8_t propNumber, bool status);  
+    void addItem(const std::string& name, uint8_t propNumber, int status);  
 
     Item_list* searchByName(const std::string& name);
-    bool getStatusByName(const std::string& name);
-    void setStatusByName(const std::string& name, bool newStatus);
+    int getStatusByName(const std::string& name);
+    void setStatusByName(const std::string& name, int newStatus);
 
     // Função para buscar um item pela Proposition
     Item_list* searchByProposition(Proposition prop);
 
     // Função para definir o status de um item pela Proposition
-    void setStatusByProposition(Proposition prop, bool newStatus);
+    void setStatusByProposition(Proposition prop, int newStatus);
 
     // Função para obter o status de um item pela Proposition
-    bool getStatusByProposition(Proposition prop);
+    int getStatusByProposition(Proposition prop);
 
     // Função para obter o tamanho da lista
     int getSize();

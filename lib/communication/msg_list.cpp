@@ -1,7 +1,10 @@
 #include "msg_list.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 // Implementação do construtor da estrutura Item
-Item_list::Item_list(const std::string& itemName, Proposition itemProp, bool itemStatus, CENUMFOR_ILF ilf)
+Item_list::Item_list(const std::string& itemName, Proposition itemProp, int itemStatus, CENUMFOR_ILF ilf)
     : name(itemName), prop(itemProp), status(itemStatus), ilf(ilf), next(nullptr) {}
 
 // Implementação do construtor da classe MsgList
@@ -17,7 +20,7 @@ MsgList::~MsgList() {
 }
 
 // Implementação da função para inserir um novo item na lista
-void MsgList::addItem(const std::string& name, uint8_t propNumber, bool status) {
+void MsgList::addItem(const std::string& name, uint8_t propNumber, int status) {
     Proposition prop(propNumber);  // Cria uma instância de Proposition usando o número fornecido
     Item_list* newItem = new Item_list(name, prop, status, CENUMFOR_ILF::TELL);
     newItem->next = head;
@@ -38,23 +41,23 @@ Item_list* MsgList::searchByName(const std::string& name) {
 }
 
 // Implementação da função para obter o status de um item pelo nome
-bool MsgList::getStatusByName(const std::string& name) {
+int MsgList::getStatusByName(const std::string& name) {
     Item_list* item = searchByName(name);
     if (item != nullptr) {
         return item->status;
     } else {
-        std::cout << "Item '" << name << "' não encontrado." << std::endl;
-        return false;
+        printf("Item '%s' não encontrado.\n", name.c_str());
+        return 0;
     }
 }
 
 // Implementação da função para definir o status de um item pelo nome
-void MsgList::setStatusByName(const std::string& name, bool newStatus) {
+void MsgList::setStatusByName(const std::string& name, int newStatus) {
     Item_list* itemToUpdate = searchByName(name);
     if (itemToUpdate != nullptr) {
         itemToUpdate->status = newStatus;
     } else {
-        std::cout << "Item '" << name << "' não encontrado." << std::endl;
+        printf("Item '%s' não encontrado.\n", name.c_str());
     }
 }
 
@@ -71,23 +74,23 @@ Item_list* MsgList::searchByProposition(Proposition prop) {
 }
 
 // Implementação da função para definir o status de um item pela Proposition
-void MsgList::setStatusByProposition(Proposition prop, bool newStatus) {
+void MsgList::setStatusByProposition(Proposition prop, int newStatus) {
     Item_list* itemToUpdate = searchByProposition(prop);
     if (itemToUpdate != nullptr) {
         itemToUpdate->status = newStatus;
     } else {
-        std::cout << "Proposition não encontrada." << std::endl;
+        printf("Proposition não encontrada.\n");
     }
 }
 
 // Implementação da função para obter o status de um item pela Proposition
-bool MsgList::getStatusByProposition(Proposition prop) {
+int MsgList::getStatusByProposition(Proposition prop) {
     Item_list* item = searchByProposition(prop);
     if (item != nullptr) {
         return item->status;
     } else {
-        std::cout << "Proposition não encontrada." << std::endl;
-        return false;
+        printf("Proposition não encontrada.\n");
+        return 0;
     }
 }
 
@@ -100,13 +103,15 @@ Item_list* MsgList::getHead() {
     return head;
 }
 
+// Implementação da função para imprimir a lista
 void MsgList::print() {
     Item_list* current = head;
-    std::cout << "Lista de Itens:" << std::endl;
+    printf("Lista de Itens:\n");
     while (current != nullptr) {
-        std::cout << "- Proposition: " << static_cast<int>(current->prop.get_name()) << ", Status: " << current->status << ", ILF: " << static_cast<int>(current->ilf) << ", Nome: " << current->name << std::endl;
+        printf("- Proposition: %d, Status: %d, ILF: %s, Nome: %s\n", 
+               current->prop.get_name(), current->status, IlfToString(current->ilf).c_str(), current->name.c_str());
         current = current->next;
     }
-    std::cout << std::endl;
+    printf("\n");
 }
 

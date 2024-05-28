@@ -54,6 +54,7 @@ public:
     list.addItem(".send", 3, false);
     list.addItem("say_hello", 5, false);
     list.addItem("hello", 4, false);
+    list.print();
     communicator = Communicator(&list);
 
     //--------------------------------------------------------------------------

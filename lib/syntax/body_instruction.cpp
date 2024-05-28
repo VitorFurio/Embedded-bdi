@@ -8,11 +8,7 @@
 #include "body_instruction.h"
 
 // For internal action
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "../communication/sender.h"
-
 
 
 BodyInstruction::BodyInstruction(BodyType type,
@@ -61,11 +57,6 @@ BodyReturn BodyInstruction::run_instruction(BeliefBase * belief_base,
     Sender::setProp(_internal_action_prop);
     bool value = _take_action();
     result = BodyReturn(BodyType::INTERNAL_ACTION, value, nullptr);
-    
-    // printf("ILF: %d\n", static_cast<int>(_ilf));
-    // printf("Prop Name(belief): %u\n", _prop.get_name());
-    // printf("Prop Name(instruction): %u\n", _proposition.get_name());
-    // printf("\n");
   }
   
   else if (_type == BodyType::BELIEF)

@@ -14,10 +14,12 @@
 #include "../bdi/belief_base.h"
 #include "../bdi/event_base.h"
 #include "../bdi/belief.h"
-#include <string>
-#include <cstdint>
 
-#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+// #include <string>
+// #include <cstdint>
 
 /**
  * Body instructions can be belief operations, goal operations (adopt/drop

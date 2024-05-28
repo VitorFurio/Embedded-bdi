@@ -18,7 +18,6 @@
 class Communicator {
 private:
     static MsgList* _list;
-    static MQTTClient _client;
     static std::string _name;
      
 public:
@@ -26,8 +25,8 @@ public:
     Communicator(MsgList* list);
     static void initializeClient();
     void update(BeliefBase * belief_base, EventBase * event_base);
-    static int publish_message(std::string& topic, std::string& message);
     static int messageArrived(const std::string& msg);
+    static int publish_message(std::string& topic, std::string& message);
     static bool internal_action_broadcast();
     static bool internal_action_send();
     static bool internal_action_my_name();
