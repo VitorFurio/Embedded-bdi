@@ -3,7 +3,8 @@
 
 #include "msg_list.h"
 #include "sender.h"
-#include "mqtt_functions.h"
+#include "protocol.h"
+
 #include "../bdi/belief.h"
 #include "../bdi/belief_base.h"
 #include "../bdi/event.h"
@@ -21,17 +22,22 @@ private:
     static std::string _name;
      
 public:
+    // Constructors and destructors
     Communicator();
     Communicator(MsgList* list);
-    static void initializeClient();
+    ~Communicator();
+
+    // Communication functions
+    static void initialize();
+    static void setName(const std::string name); 
     void update(BeliefBase * belief_base, EventBase * event_base);
     static int messageArrived(const std::string& msg);
-    static int publish_message(std::string& topic, std::string& message);
+    static int send(std::string& destintion, std::string& message);
+    
+    // Internal Actions
     static bool internal_action_broadcast();
     static bool internal_action_send();
     static bool internal_action_my_name();
-    static void setName(const std::string name); 
-    ~Communicator();
 };
 
 #endif // COMMUNICATOR_H

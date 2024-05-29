@@ -13,12 +13,7 @@ Communicator::Communicator(MsgList* list) : Communicator() {
 }
 Communicator::~Communicator() {}
 
-void Communicator::initializeClient() {
-    printf("Inicializando communicator...\n");
-    MQTTFunctions::initializeClient(_name);
-}
-
-// Auxiliary functions
+//--------------------- Auxiliary functions ---------------------
 bool parseMessage(const std::string& message, std::string& ilf, std::string& prop) {
     size_t pos = message.find('/');
     if (pos == std::string::npos || pos == 0 || pos + 1 == message.length()) {
@@ -41,6 +36,15 @@ std::pair<bool, CENUMFOR_ILF> stringToILF(const std::string& str) {
     } else {
         return {false, CENUMFOR_ILF::TELL};  // Default error case
     }
+}
+//  -------------------- // -------------------- // --------------------
+
+void Communicator::initialize() {
+    Protocol::initialize(_name);
+}
+
+void Communicator::setName(const std::string name) {
+    _name = name;
 }
 
 void Communicator::update(BeliefBase* belief_base, EventBase* event_base) {
@@ -100,24 +104,15 @@ int Communicator::messageArrived(const std::string& msg) {
     return 1;
 }
 
-int Communicator::publish_message(std::string& topic, std::string& message) {
-    return MQTTFunctions::publish_message(topic, message);
+int Communicator::send(std::string& destination, std::string& message) {
+    return Protocol::send(destination, message);
 }
 
 bool Communicator::internal_action_broadcast() {
-    if (!_list) {
-        printf("Error: MsgList not initialized.\n");
-        return false;
-    }
-    auto item = _list->searchByProposition(Sender::getProp());
-    if (!item) {
-        printf("Error: No item found for the provided proposition.\n");
-        return false;
-    }
-    std::string topic = "broadcast"; 
-    std::string message = IlfToString(Sender::getIlf()) + "/" + item->name;
-    publish_message(topic, message);
-    return true;
+    // The broadcast function may vary depending on the protocol. 
+    // In this example, it sends the message to the 'broadcast' destination.
+    Sender::setDest("broadcast");
+    return internal_action_send();
 }
 
 bool Communicator::internal_action_send() {
@@ -130,20 +125,13 @@ bool Communicator::internal_action_send() {
         printf("Error: No item found for the provided proposition.\n");
         return false;
     }
-    std::string topic = Sender::getDest();  
+    std::string dest = Sender::getDest();  
     std::string message = IlfToString(Sender::getIlf()) + "/" + item->name;
-    //MQTTFunctions::subscribe_topic(topic);
-    publish_message(topic, message);
-  //  MQTTFunctions::unsubscribe_topic(topic);
+    send(dest, message);
     return true;
-}
-
-void Communicator::setName(const std::string name) {
-    _name = name;
 }
 
 bool Communicator::internal_action_my_name() {
-    printf("Nome do agente: %s\n", _name.c_str());
+    printf("Agent's Name: %s\n", _name.c_str());
     return true;
 }
-

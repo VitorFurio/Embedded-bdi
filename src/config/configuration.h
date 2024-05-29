@@ -4,10 +4,9 @@
  * !start.
  * 
  * +!start <-.my_name("Alice"); +happy.
+ * +happy <- .broadcast(achieve,hello); !!hello.
+ * +!hello <- say_hello; .send(bob,tell,happy).
  * 
- * +happy <- .send(bob,achieve,hello).
- * 
- * +!hello <- say_hello; .broadcast(tell,happy).
  */ 
 
 #ifndef CONFIGURATION_H_
@@ -49,9 +48,9 @@ public:
     // Mapping propositions to enable communication between agents.
     list.addItem(".my_name", 2, false);
     list.addItem("happy", 0, false);
-    list.addItem(".broadcast", 6, false);
+    list.addItem(".broadcast", 3, false);
     list.addItem("start", 1, false);
-    list.addItem(".send", 3, false);
+    list.addItem(".send", 6, false);
     list.addItem("say_hello", 5, false);
     list.addItem("hello", 4, false);
     list.print();
@@ -89,14 +88,17 @@ public:
 
     Proposition prop_1(0);
     context_1 = Context(0);
-    body_1 = Body(1);
+    body_1 = Body(2);
 
     Proposition prop_1_body_0(3);
-    BodyInstruction inst_0_1(BodyType::INTERNAL_ACTION, prop_1_body_0, communicator.internal_action_send);
-    inst_0_1.add_arg("bob");
+    BodyInstruction inst_0_1(BodyType::INTERNAL_ACTION, prop_1_body_0, communicator.internal_action_broadcast);
     inst_0_1.add_arg(CENUMFOR_ILF::ACHIEVE);
     inst_0_1.add_arg(list.searchByName("hello")->prop);
     body_1.add_instruction(inst_0_1);
+
+    Proposition prop_1_body_1(4);
+    BodyInstruction inst_1_1(BodyType::GOAL, prop_1_body_1, EventOperator::GOAL_ACHIEVE);
+    body_1.add_instruction(inst_1_1);
 
     Plan plan_1(EventOperator::BELIEF_ADDITION, prop_1, &context_1, &body_1);
     plan_base.add_plan(plan_1);
@@ -112,8 +114,8 @@ public:
     body_2.add_instruction(inst_0_2);
 
     Proposition prop_2_body_1(6);
-    BodyInstruction inst_1_2(BodyType::INTERNAL_ACTION, prop_2_body_1, communicator.internal_action_broadcast);
-    inst_1_2.add_arg("broadcast");
+    BodyInstruction inst_1_2(BodyType::INTERNAL_ACTION, prop_2_body_1, communicator.internal_action_send);
+    inst_1_2.add_arg("bob");
     inst_1_2.add_arg(CENUMFOR_ILF::TELL);
     inst_1_2.add_arg(list.searchByName("happy")->prop);
     body_2.add_instruction(inst_1_2);

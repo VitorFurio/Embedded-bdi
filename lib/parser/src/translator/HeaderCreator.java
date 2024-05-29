@@ -304,8 +304,6 @@ public class HeaderCreator
 
             if (body.getProposition().equals(".broadcast")) {
                argument = "communicator.internal_action_broadcast";
-               // JH: for .broadcast
-               arg_terms +="    "+ inst_id + ".add_arg(\"broadcast\");\n";
                arg_terms +="    "+ inst_id + ".add_arg(CENUMFOR_ILF::"+ body.getArgs().get(0).toUpperCase()+");\n";
                arg_terms +="    "+ inst_id + ".add_arg(list.searchByName(\""+ body.getArgs().get(1)+"\")->prop);\n";
              }

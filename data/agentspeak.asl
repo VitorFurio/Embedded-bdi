@@ -1,7 +1,6 @@
 !start.
 
 +!start <-.my_name("Alice"); +happy.
++happy <- .broadcast(achieve,hello); !!hello.
++!hello <- say_hello; .send(bob,tell,happy).
 
-+happy <- .send(bob,achieve,hello).
-
-+!hello <- say_hello; .broadcast(tell,happy).

@@ -1,55 +1,50 @@
 #ifndef MSG_LIST_H
 #define MSG_LIST_H
 
-#include <string>
 #include "../syntax/cenumfor_ilf.h"
 #include "../syntax/proposition.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-// Estrutura para armazenar os dados do item
+// This object is a list of all the agent's propositions. 
+// When a proposition is received via message, the Communicator::messageArrieve function updates this object. 
+// The Communicator::update uses this object to add beliefs and events to the agent's mind.
+
+// Structure to store an agent proposition.
 struct Item_list {
-    std::string name; // Nome da propriedade
-    Proposition prop; // Objeto Proposition substituindo 'number'
-    int status; // true se recebeu uma mensagem
-    CENUMFOR_ILF ilf;
+    std::string name;   // Proposition as string
+    Proposition prop;   // proposition as number
+    int status;         // True if the agent received this proposition in a message
+    CENUMFOR_ILF ilf;   // ILF of the received proposition
     Item_list* next;
 
-    // Construtor para inicializar os membros
     Item_list(const std::string& itemName, Proposition itemProp, int itemStatus, CENUMFOR_ILF ilf);
 };
 
 class MsgList {
 private:
-    Item_list* head; // Ponteiro para o início da lista
-    int size;   // Tamanho da lista
+    Item_list* head; 
+    int size; 
 
 public:
-    // Construtor padrão para inicializar a lista vazia
+    // Constructors and destructors
     MsgList();
-
-    // Destrutor para liberar a memória alocada
     ~MsgList();
 
-    // Função para inserir um novo item na lista
+    //List functions
     void addItem(const std::string& name, uint8_t propNumber, int status);  
 
     Item_list* searchByName(const std::string& name);
     int getStatusByName(const std::string& name);
     void setStatusByName(const std::string& name, int newStatus);
 
-    // Função para buscar um item pela Proposition
     Item_list* searchByProposition(Proposition prop);
-
-    // Função para definir o status de um item pela Proposition
-    void setStatusByProposition(Proposition prop, int newStatus);
-
-    // Função para obter o status de um item pela Proposition
     int getStatusByProposition(Proposition prop);
-
-    // Função para obter o tamanho da lista
+    void setStatusByProposition(Proposition prop, int newStatus);
+    
     int getSize();
-
     Item_list* getHead();
-
     void print();
 };
 

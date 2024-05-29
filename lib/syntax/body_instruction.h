@@ -18,8 +18,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-// #include <string>
-// #include <cstdint>
 
 /**
  * Body instructions can be belief operations, goal operations (adopt/drop

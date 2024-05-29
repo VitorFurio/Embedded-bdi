@@ -33,7 +33,6 @@ BodyInstruction::BodyInstruction(BodyType type,
   _operator = event_operator;
   
   _internal_action_prop = prop;
-  //std::cout << _dest << "\n" ; 
 }
 
 // Add handling of belief that is not in beliefbase
