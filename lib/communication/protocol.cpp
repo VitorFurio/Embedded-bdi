@@ -4,9 +4,9 @@ void Protocol::initialize(const std::string& Id) {
     printf("Implement initialization function with ID: %s.\n",Id.c_str());
 }
 
-int Protocol::send(const std::string& destination, const std::string& message) {
+bool Protocol::send(const std::string& destination, const std::string& message) {
     printf("Implement send function to send %s to %s.\n",message.c_str(),destination.c_str());
-    return 0;
+    return true;
 }
 
 int Protocol::messageArrived() {

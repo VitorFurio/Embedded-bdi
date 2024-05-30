@@ -13,7 +13,7 @@ public:
     static void initialize(const std::string& Id);
 
     // Send a message to a specific destination.
-    static int send(const std::string& destination, const std::string& message);
+    static bool send(const std::string& destination, const std::string& message);
 
     // Callback function to handle messages arriving at the agent.
     static int messageArrived();

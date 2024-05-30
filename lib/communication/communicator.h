@@ -32,7 +32,7 @@ public:
     static void setName(const std::string name); 
     void update(BeliefBase * belief_base, EventBase * event_base);
     static int messageArrived(const std::string& msg);
-    static int send(std::string& destintion, std::string& message);
+    static bool send(std::string& destintion, std::string& message);
     
     // Internal Actions
     static bool internal_action_broadcast();
