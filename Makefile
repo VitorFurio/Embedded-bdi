@@ -83,6 +83,15 @@ all: tests valgrind agent docs
 
 agent: translate force_agent_update $(BUILD_DIR)/$(AGENT_EXEC)
 
+alice:
+	./copy_examples.sh alice
+	make agent
+
+bob:
+	./copy_examples.sh bob
+	make agent
+
+
 tests: $(BUILD_DIR)/$(TEST_EXEC)
 
 valgrind: $(BUILD_DIR)/$(VALGRIND_EXEC)

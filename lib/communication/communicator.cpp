@@ -127,8 +127,7 @@ bool Communicator::internal_action_send() {
     }
     std::string dest = Sender::getDest();  
     std::string message = IlfToString(Sender::getIlf()) + "/" + item->name;
-    send(dest, message);
-    return true;
+    return send(dest, message);
 }
 
 bool Communicator::internal_action_my_name() {

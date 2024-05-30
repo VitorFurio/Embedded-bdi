@@ -1,54 +1,48 @@
 #include "protocol.h"
 #include <thread>
 #include <chrono>
-#include <MQTTAsync.h>
+#include <iostream>
 
-const std::string Protocol::SERVER_ADDRESS = "tcp://mqtt.eclipseprojects.io:1883";
-MQTTAsync Protocol::client = nullptr;
+const std::string SERVER_ADDRESS = "tcp://mqtt.eclipseprojects.io:1883";
 std::string Protocol::clientId;
-bool isConnected = false;  // Variável para verificar se a conexão está estabelecida
-bool isSubscribedToClientId = false;
-bool isSubscribedToBroadcast = false;
+MQTTAsync Protocol::client = nullptr;
+bool Protocol::isConnected = false;
+bool Protocol::isSubscribedToClientId = false;
+bool Protocol::isSubscribedToBroadcast = false;
 
-struct SubscribeContext {
-    std::string topic;
-    std::string clientId;
-};
-
-void connlost(void *context, char *cause) {
-    printf("Connection lost: %s\n", cause);
-    isConnected = false;  // Atualizar estado de conexão
+void Protocol::connlost(void *context, char *cause) {
+    std::cout << "Connection lost: " << cause << std::endl;
+    isConnected = false;
     isSubscribedToClientId = false;
     isSubscribedToBroadcast = false;
 }
 
-int msgarrvd(void *context, char *topicName, int topicLen, MQTTAsync_message *message) {
+int Protocol::msgarrvd(void *context, char *topicName, int topicLen, MQTTAsync_message *message) {
     std::string msg((char*)message->payload, message->payloadlen);
-    printf("Message arrived on topic %s: %s\n", topicName, msg.c_str());
+    std::cout << "Message arrived on topic " << topicName << ": " << msg << std::endl;
     Communicator::messageArrived(msg);
     MQTTAsync_freeMessage(&message);
     MQTTAsync_free(topicName);
     return 1;
 }
 
-void onConnectFailure(void* context, MQTTAsync_failureData* response) {
-    printf("Connection failed, rc %d\n", response ? response->code : 0);
-    isConnected = false;  // Atualizar estado de conexão
+void Protocol::onConnectFailure(void* context, MQTTAsync_failureData* response) {
+    std::cout << "Connection failed, rc " << (response ? response->code : 0) << std::endl;
+    isConnected = false;
 }
 
-void onConnectSuccess(void* context, MQTTAsync_successData* response) {
-    printf("Successfully connected\n");
-    isConnected = true;  // Atualizar estado de conexão
+void Protocol::onConnectSuccess(void* context, MQTTAsync_successData* response) {
+    std::cout << "Successfully connected" << std::endl;
+    isConnected = true;
 
-    // Retrieve the clientId from the context and subscribe to the clientId and broadcast topics
-    std::string clientId = static_cast<const char*>(context);
-    Protocol::subscribe(clientId);
-    Protocol::subscribe("broadcast");
+    // Subscribe to the clientId and broadcast topics
+    subscribe(clientId);
+    subscribe("broadcast");
 }
 
-void onSubscribeSuccess(void* context, MQTTAsync_successData* response) {
+void Protocol::onSubscribeSuccess(void* context, MQTTAsync_successData* response) {
     SubscribeContext* subscribeContext = static_cast<SubscribeContext*>(context);
-    printf("Subscribed successfully to topic: %s\n", subscribeContext->topic.c_str());
+    std::cout << "Subscribed successfully to topic: " << subscribeContext->topic << std::endl;
     if (subscribeContext->topic == subscribeContext->clientId) {
         isSubscribedToClientId = true;
     } else if (subscribeContext->topic == "broadcast") {
@@ -57,28 +51,28 @@ void onSubscribeSuccess(void* context, MQTTAsync_successData* response) {
     delete subscribeContext;  // Liberar memória alocada
 }
 
-void onSubscribeFailure(void* context, MQTTAsync_failureData* response) {
+void Protocol::onSubscribeFailure(void* context, MQTTAsync_failureData* response) {
     SubscribeContext* subscribeContext = static_cast<SubscribeContext*>(context);
-    printf("Subscribe failed for topic: %s, rc %d\n", subscribeContext->topic.c_str(), response ? response->code : 0);
+    std::cout << "Subscribe failed for topic: " << subscribeContext->topic << ", rc " << (response ? response->code : 0) << std::endl;
     delete subscribeContext;  // Liberar memória alocada
 }
 
-void Protocol::initialize(const std::string& Id) {
-    clientId = Id;
-    MQTTAsync_create(&client, SERVER_ADDRESS.c_str(), clientId.c_str(), MQTTCLIENT_PERSISTENCE_NONE, NULL);
+void Protocol::initialize(const std::string& id) {
+    clientId = id;
+    MQTTAsync_create(&client, SERVER_ADDRESS.c_str(), clientId.c_str(), MQTTCLIENT_PERSISTENCE_NONE, nullptr);
 
-    MQTTAsync_setCallbacks(client, NULL, connlost, msgarrvd, NULL);
+    MQTTAsync_setCallbacks(client, nullptr, connlost, msgarrvd, nullptr);
 
     MQTTAsync_connectOptions conn_opts = MQTTAsync_connectOptions_initializer;
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
     conn_opts.onSuccess = onConnectSuccess;
     conn_opts.onFailure = onConnectFailure;
-    conn_opts.context = (void*)clientId.c_str();
+    conn_opts.context = nullptr;
 
     int rc;
     if ((rc = MQTTAsync_connect(client, &conn_opts)) != MQTTASYNC_SUCCESS) {
-        printf("Failed to start connect, return code %d\n", rc);
+        std::cout << "Failed to start connect, return code " << rc << std::endl;
         exit(EXIT_FAILURE);
     }
 
@@ -95,11 +89,11 @@ void Protocol::initialize(const std::string& Id) {
 
 bool Protocol::send(const std::string& destination, const std::string& message) {
     if (!isConnected) {
-        printf("Not connected, unable to send message\n");
+        std::cout << "Not connected, unable to send message" << std::endl;
         return false;
     }
 
-    printf("Sending message to topic %s: %s\n", destination.c_str(), message.c_str());
+    std::cout << "Sending message to topic " << destination << ": " << message << std::endl;
 
     MQTTAsync_message pubmsg = MQTTAsync_message_initializer;
     pubmsg.payload = (void*)message.c_str();
@@ -108,15 +102,15 @@ bool Protocol::send(const std::string& destination, const std::string& message) 
     pubmsg.retained = 0;
     MQTTAsync_responseOptions opts = MQTTAsync_responseOptions_initializer;
     opts.onSuccess = [](void* context, MQTTAsync_successData* response) {
-      //  printf("Message delivered successfully\n");
+        std::cout << "Message delivered successfully" << std::endl;
     };
     opts.onFailure = [](void* context, MQTTAsync_failureData* response) {
-        printf("Message delivery failed, rc %d\n", response ? response->code : 0);
+        std::cout << "Message delivery failed, rc " << (response ? response->code : 0) << std::endl;
     };
 
     int rc;
     if ((rc = MQTTAsync_sendMessage(client, destination.c_str(), &pubmsg, &opts)) != MQTTASYNC_SUCCESS) {
-        printf("Failed to start sendMessage, return code %d\n", rc);
+        std::cout << "Failed to start sendMessage, return code " << rc << std::endl;
         return false;
     }
     return true;
@@ -131,7 +125,7 @@ void Protocol::subscribe(const std::string& topic) {
 
     int rc;
     if ((rc = MQTTAsync_subscribe(client, topic.c_str(), 1, &opts)) != MQTTASYNC_SUCCESS) {
-        printf("Failed to start subscribe, return code %d\n", rc);
+        std::cout << "Failed to start subscribe, return code " << rc << std::endl;
         delete context;  // Liberar memória alocada em caso de falha
     }
 }
@@ -139,15 +133,15 @@ void Protocol::subscribe(const std::string& topic) {
 int Protocol::disconnect() {
     MQTTAsync_disconnectOptions opts = MQTTAsync_disconnectOptions_initializer;
     opts.onSuccess = [](void* context, MQTTAsync_successData* response) {
-        printf("Successfully disconnected\n");
+        std::cout << "Successfully disconnected" << std::endl;
     };
     opts.onFailure = [](void* context, MQTTAsync_failureData* response) {
-        printf("Disconnect failed, rc %d\n", response ? response->code : 0);
+        std::cout << "Disconnect failed, rc " << (response ? response->code : 0) << std::endl;
     };
 
     int rc;
     if ((rc = MQTTAsync_disconnect(client, &opts)) != MQTTASYNC_SUCCESS) {
-        printf("Failed to start disconnect, return code %d\n", rc);
+        std::cout << "Failed to start disconnect, return code " << rc << std::endl;
         return rc;
     }
     MQTTAsync_destroy(&client);
