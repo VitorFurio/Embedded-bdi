@@ -4,6 +4,8 @@ Embedded-BDI allows programming deliberative [BDI](https://en.wikipedia.org/wiki
 
 Visit the [project page](https://embedded-bdi.github.io) for more information.
 
+---
+## Example
 For an example of communication between agents follow the steps below.
 
 First, install the mqtt paho library, in C code, asynchronous and non-encrypted [paho-mqtt3a](https://github.com/eclipse/paho.mqtt.c)
