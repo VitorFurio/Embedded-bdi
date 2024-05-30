@@ -6,13 +6,13 @@
 
 bool action_say_hello()
 {
-  std::cout << "Hello, I'm Bob!!" << std::endl;
+  std::cout  << std::endl << "Hello, I'm Bob!!" << std::endl;
   return true;
 }
 
 bool action_say_night()
 {
-  std::cout << "It's night now, Alice." << std::endl;
+  std::cout << std::endl <<  "It's night now, Alice." << std::endl;
   return true;
 }
 

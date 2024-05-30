@@ -10,7 +10,7 @@
  * 
  * +!start <- .my_name("bob"); say_hello; .broadcast(achieve,hello).
  * 
- * +!is_day <- say_night; .broadcast(tell,its_night). // bob doesn't need to have the is_day intention he just need have a plan to deal with it.
+ * +!is_day <- say_night; .send(alice,tell,its_night). // bob doesn't need to have the is_day intention he just need have a plan to deal with it.
  */ 
 
 #ifndef CONFIGURATION_H_
@@ -52,6 +52,7 @@ public:
     list.addItem(".my_name", 3, false);
     list.addItem(".broadcast", 5, false);
     list.addItem("start", 2, false);
+    list.addItem(".send", 8, false);
     list.addItem("say_hello", 4, false);
     list.addItem("is_day", 6, false);
     list.addItem("say_night", 7, false);
@@ -108,8 +109,9 @@ public:
     BodyInstruction inst_0_1(BodyType::ACTION, prop_1_body_0, action_say_night);
     body_1.add_instruction(inst_0_1);
 
-    Proposition prop_1_body_1(5);
-    BodyInstruction inst_1_1(BodyType::INTERNAL_ACTION, prop_1_body_1, communicator.internal_action_broadcast);
+    Proposition prop_1_body_1(8);
+    BodyInstruction inst_1_1(BodyType::INTERNAL_ACTION, prop_1_body_1, communicator.internal_action_send);
+    inst_1_1.add_arg("alice");
     inst_1_1.add_arg(CENUMFOR_ILF::TELL);
     inst_1_1.add_arg(list.searchByName("its_night")->prop);
     body_1.add_instruction(inst_1_1);

@@ -102,7 +102,7 @@ bool Protocol::send(const std::string& destination, const std::string& message) 
     pubmsg.retained = 0;
     MQTTAsync_responseOptions opts = MQTTAsync_responseOptions_initializer;
     opts.onSuccess = [](void* context, MQTTAsync_successData* response) {
-        std::cout << "Message delivered successfully" << std::endl;
+       // std::cout << "Message delivered successfully" << std::endl;
     };
     opts.onFailure = [](void* context, MQTTAsync_failureData* response) {
         std::cout << "Message delivery failed, rc " << (response ? response->code : 0) << std::endl;
