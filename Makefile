@@ -1,5 +1,3 @@
-# Based on https://spin.atomicobject.com/2016/08/26/makefile-c-projects/
-
 ############################ General configuration #############################
 # Compiler to be used
 CXX := g++
@@ -23,7 +21,8 @@ VALGRIND_EXEC ?= valgrind.out
 DOCS_DIR ?= ./docs
 BUILD_DIR ?= ./build
 
-CFLAGS=-lpaho-mqtt3c 
+# Include the Paho MQTT library
+CFLAGS := -lpaho-mqtt3a
 
 ############################### Agent variables ################################
 AGENT_DIRS ?= ./lib ./data ./src
@@ -42,10 +41,10 @@ TEST_SRCS := $(shell find $(TEST_DIRS) -name *.cpp -or -name *.c -or -name *.s -
 TEST_OBJS := $(TEST_SRCS:%=$(BUILD_DIR)/%.o)
 TEST_DEPS := $(TEST_OBJS:.o=.d)
 TEST_INC_DIRS := $(shell find $(TEST_DIRS) -type d ! -path '*/Debug*')
-TEST_INC_FLAGS := $(addprefix -I,$(TEST_INC_DIRS) )
+TEST_INC_FLAGS := $(addprefix -I,$(TEST_INC_DIRS))
 
 $(BUILD_DIR)/$(TEST_EXEC): $(TEST_OBJS)
-	$(CXX) $(TEST_OBJS) -o $@ $(LDFLAGS)
+	$(CXX) $(TEST_OBJS) $(CFLAGS) -o $@ $(LDFLAGS)
 
 ############################# Valgrind variables ###############################
 VALGRIND_DIRS ?= ./lib ./valgrind 
@@ -56,11 +55,11 @@ VALGRIND_INC_DIRS := $(shell find $(VALGRIND_DIRS) -type d ! -path '*/Debug*')
 VALGRIND_INC_FLAGS := $(addprefix -I,$(VALGRIND_INC_DIRS))
 
 $(BUILD_DIR)/$(VALGRIND_EXEC): $(VALGRIND_OBJS)
-	$(CXX) $(VALGRIND_OBJS) -o $@ $(LDFLAGS)
+	$(CXX) $(VALGRIND_OBJS) $(CFLAGS) -o $@ $(LDFLAGS)
 
 ################################# Build rules #################################
 
-CPPFLAGS ?= -std=c++11 $(OPTIMIZATION_FLAG) -Wall -DGTEST_HAS_PTHREAD=0 $(DEBUG_LEVEL) $(ADDITIONAL_FLAGS) $(TEST_INC_FLAGS)
+CPPFLAGS ?= -std=c++11 $(OPTIMIZATION_FLAG) -Wall -DGTEST_HAS_PTHREAD=0 $(DEBUG_LEVEL) $(ADDITIONAL_FLAGS) $(TEST_INC_FLAGS) $(AGENT_INC_FLAGS)
 
 # c source
 $(BUILD_DIR)/%.c.o: %.c
@@ -126,3 +125,4 @@ clean:
 -include agent.config
 
 MKDIR_P ?= mkdir -p
+

@@ -4,8 +4,7 @@
 #include "communicator.h"
 #include <stdio.h>
 #include <string.h>
-
-// This class implements the chosen communication protocol for agents.
+#include <MQTTAsync.h>
 
 class Protocol {
 public:
@@ -13,16 +12,19 @@ public:
     static void initialize(const std::string& Id);
 
     // Send a message to a specific destination.
-    static int send(const std::string& destination, const std::string& message);
+    static bool send(const std::string& destination, const std::string& message);
 
-    // Callback function to handle messages arriving at the agent.
-    static int messageArrived();
+    // Subscribe to a specific topic.
+    static void subscribe(const std::string& topic);
 
     // Disconnect and clean up the communicator protocol.
     static int disconnect();
 
 private:
-
+    static MQTTAsync client;
+    static std::string clientId;
+    static const std::string SERVER_ADDRESS;
 };
 
 #endif // PROTOCOL_H
+

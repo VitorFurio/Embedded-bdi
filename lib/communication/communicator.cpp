@@ -104,7 +104,7 @@ int Communicator::messageArrived(const std::string& msg) {
     return 1;
 }
 
-int Communicator::send(std::string& destination, std::string& message) {
+bool Communicator::send(std::string& destination, std::string& message) {
     return Protocol::send(destination, message);
 }
 
