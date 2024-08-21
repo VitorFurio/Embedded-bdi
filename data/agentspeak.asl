@@ -3,7 +3,7 @@
 !start.
 
 its_night. // Bob needs to have its_night proposition to send it to Alice
-hello. // Bob needs to have hello proposition(in belief, intention or plan) to send it to Alice
+hello. // Bob needs to have hello proposition(in belief, intention or plan) to send it to broadcast
 
 +!start <- .my_name("bob"); say_hello; .broadcast(achieve,hello).
 
