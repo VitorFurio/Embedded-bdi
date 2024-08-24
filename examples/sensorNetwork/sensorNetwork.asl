@@ -3,6 +3,7 @@
 
 // Estados possíveis:
 //alert.
+//default.
 
 // Informações de comunicação:
 //sensor2.
@@ -25,4 +26,9 @@
 +!check_alarm_condition: sensor1 & sensor2 <- trigger_alarm.
 +!check_alarm_condition: sensor2 & sensor3 <- trigger_alarm.
 +!check_alarm_condition: sensor3 & sensor1 <- trigger_alarm.
-+!check_alarm_condition.
+
++!check_alarm_condition: sensor1 <- -default; !check_alarm_condition.
++!check_alarm_condition: sensor2 <- -default; !check_alarm_condition.
++!check_alarm_condition: sensor3 <- -default; !check_alarm_condition.
+
++!check_alarm_condition: true <-  +default.
