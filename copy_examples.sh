@@ -27,3 +27,12 @@ then
   cp examples/bob/agentspeak.asl data/
   cp examples/bob/functions.* data/
 fi
+
+if [[ "$1" == "sensor" ]];
+then
+  rm -rf main/data/*
+  rm -rf main/src/config/*
+
+  cp examples/sensorNetwork/agentspeak.asl data/
+  cp examples/sensorNetwork/functions.* data/
+fi

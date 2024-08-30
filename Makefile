@@ -90,6 +90,10 @@ alice:
 bob:
 	./copy_examples.sh bob
 	make agent
+	
+sensorNetwork:
+	./copy_examples.sh sensor
+	make agent
 
 
 tests: $(BUILD_DIR)/$(TEST_EXEC)
