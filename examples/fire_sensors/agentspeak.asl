@@ -16,16 +16,19 @@
 // Reação a mensagens
 +sensor2 <- +alert.
 +sensor3 <- +alert.
+
 +alert <- print_alert; !!check_alarm_condition.
 
 // Se pelo menos 2 sensores dispararem, o alarme é acionado.
 +!check_alarm_condition: fire & sensor2 <- trigger_alarm.
 +!check_alarm_condition: fire & sensor3 <- trigger_alarm. 
 
-+!check_alarm_condition: sensor1 <- !!check_alarm_condition.
+// Mantém o estado de alerta.
++!check_alarm_condition: fire <- !!check_alarm_condition.
 +!check_alarm_condition: sensor2 <- !!check_alarm_condition.
 +!check_alarm_condition: sensor3 <- !!check_alarm_condition.
 
+// Sai do estado de alerta.
 +!check_alarm_condition <- -alert; print_default.
 
 

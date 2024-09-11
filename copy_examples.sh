@@ -33,6 +33,6 @@ then
   rm -rf main/data/*
   rm -rf main/src/config/*
 
-  cp examples/sensorNetwork/agentspeak.asl data/
-  cp examples/sensorNetwork/functions.* data/
+  cp examples/fire_sensors/agentspeak.asl data/
+  cp examples/fire_sensors/functions.* data/
 fi

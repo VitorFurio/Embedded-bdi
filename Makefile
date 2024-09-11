@@ -91,7 +91,7 @@ bob:
 	./copy_examples.sh bob
 	make agent
 	
-sensorNetwork:
+fire_sensors:
 	./copy_examples.sh sensor
 	make agent
 
