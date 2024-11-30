@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include <time.h>
+//#include <time.h>
 
 time_t start = time(NULL);
 bool fire = false;
@@ -48,11 +48,7 @@ bool action_print_not_fire()
 
 bool update_fire(bool var)
 {
-  if(time(NULL) - start > 3){
-  	fire = !fire;
-  	start = time(NULL);	
-  }
-  return fire;
+  return var;
 }
 
 #endif /* FUNCTIONS_H_ */
