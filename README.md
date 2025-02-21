@@ -6,8 +6,9 @@ Visit the [project page](https://embedded-bdi.github.io) for more information.
 
 ---
 ## Example
-For an example of communication between agents follow the steps below.
+This example illustrates the communication between two agents. It can be run on a local installation or based on Docker containers (recommended).
 
+### Local execution
 First, install and build the mqtt paho library, in C code, asynchronous and unencrypted [paho-mqtt3a](https://github.com/eclipse/paho.mqtt.c)
 
 Second, in a terminal compile and run the agent alice:
@@ -20,6 +21,16 @@ Third, in another terminal, compile and run the agent bob:
 make bob
 ./build/agent.out
 ```
+### Docker-based execution (recommended)
+1. Run the container of agent <em>Alice</em>
+```
+docker run --rm maiquelb/embedded-bdi:latest /bin/bash -c "cd /Embedded-bdi && make alice && ./build/agent.out"
+```
+2. Run the container of agent <em>Bob</em>
+```
+docker run --rm maiquelb/embedded-bdi:latest /bin/bash -c "cd /Embedded-bdi && make bob && ./build/agent.out"
+```
+### Expected output
 
 If communication between agents occurred successfully, Alice's output should be:
 ```
